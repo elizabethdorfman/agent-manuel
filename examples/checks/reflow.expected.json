@@ -1,0 +1,39 @@
+{
+  "check": "reflow",
+  "fixture": "examples/checks/reflow.html",
+  "viewport": { "width": 390, "height": 844 },
+  "checkedWidth": 320,
+  "expected": {
+    "#intro": "none",
+    "#hero-img": "fail",
+    "#fluid-img": "none",
+    "#long-string": "fail",
+    "#wrapped-url": "none",
+    "#table-scroll": "none",
+    "#wide-table": "none",
+    "#cell-1": "none",
+    "#price-card": "none",
+    "#price-row": "review",
+    "#avatar": "none",
+    "#avatar-img": "none"
+  },
+  "rules": {
+    "#hero-img": ["R1"],
+    "#long-string": ["R1"],
+    "#price-row": ["R2"]
+  },
+  "measurements": {
+    "#hero-img": { "by": "box", "width": "400px" },
+    "#long-string": { "by": "text" },
+    "#price-row": { "clipper": "#price-card", "axis": "x", "minWidth": "360px" }
+  },
+  "notes": {
+    "#hero-img": "Planted: image fixed at 400px wide.",
+    "#long-string": "Planted: unbroken URL with default wrapping; the text, not the box, overflows.",
+    "#price-row": "Planted: nowrap row with min-width 360px clipped by the overflow:hidden card.",
+    "#table-scroll": "Non-problem: overflow-x:auto container; the 600px table scrolls inside it.",
+    "#fluid-img": "Non-problem: max-width:100%.",
+    "#wrapped-url": "Non-problem: overflow-wrap:anywhere.",
+    "#avatar": "Non-problem: overflow:hidden frame whose image fits exactly."
+  }
+}

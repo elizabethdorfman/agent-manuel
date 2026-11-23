@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TY01 typography fixture</title>
+<style>
+  /* A web font whose file does not exist: it fails to load and the browser falls back. */
+  @font-face { font-family: "Broken Webfont"; src: url("./missing-font-file.woff2") format("woff2"); }
+  /* A web font that resolves to an installed face: it loads, so it is not a fallback. */
+  @font-face { font-family: "Fixture Sans"; src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("DejaVu Sans"); }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 16px; font: 16px/1.5 system-ui, sans-serif; color: #222; background: #fff; }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0 0 12px; }
+  h2 { font-size: 20px; line-height: 1.3; margin: 24px 0 8px; }
+  .measure { max-width: 34em; margin: 0 0 12px; }
+  input, textarea { font: inherit; display: block; width: 100%; max-width: 320px; padding: 8px; margin: 4px 0 12px; border: 1px solid #888; }
+  label { display: block; }
+  .cell { display: block; width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 8px; }
+  .clamp { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; max-width: 260px; margin: 0 0 12px; }
+  .badge { display: inline-block; height: 32px; line-height: 32px; padding: 0 12px; overflow: hidden; border: 1px solid #444; border-radius: 6px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; font-size: 10px; }
+</style>
+</head>
+<body>
+  <h1 id="title">Account settings</h1>
+
+  <h2 id="fonts-heading">Fonts</h2>
+  <p id="fallback" class="measure" style="font-family: 'Agent Manuel Missing Font', Arial, sans-serif">This paragraph names a font that is not installed, so it silently falls back.</p>
+  <p id="webfont-failed" class="measure" style="font-family: 'Broken Webfont', Arial, sans-serif">This paragraph uses a web font whose file is missing.</p>
+  <p id="named-family" class="measure" style="font-family: Arial, sans-serif">This paragraph asks for Arial and gets Arial.</p>
+  <p id="local-face" class="measure" style="font-family: 'Fixture Sans', Arial, sans-serif">This paragraph uses a web font that loaded from an installed face.</p>
+  <p id="mono-line" class="measure">Run <code id="mono">npm test</code> to check it.</p>
+
+  <h2 id="sizes-heading">Sizes</h2>
+  <label id="email-label" for="email-14">Email</label>
+  <input id="email-14" type="email" value="ada@example.com" style="font-size: 14px">
+  <label id="name-label" for="name-16">Name</label>
+  <input id="name-16" type="text" value="Ada Lovelace">
+  <label id="notes-label" for="notes-16">Notes</label>
+  <textarea id="notes-16" rows="2">Prefers email.</textarea>
+  <div id="legal-10" style="font-size: 10px; margin-bottom: 12px">By continuing you agree to the terms.</div>
+  <p id="caption-13" class="measure" style="font-size: 13px">Photo by the team, taken at the 2025 offsite.</p>
+  <p id="body-16" class="measure">Your settings are saved on this device and synced to your account the next time you sign in. Change them at any time.</p>
+  <span id="sr-hint" class="sr-only">Screen-reader-only hint text that is visually hidden on purpose.</span>
+  <p id="hidden-small" style="display: none; font-size: 8px">Hidden text never shown.</p>
+
+  <h2 id="spacing-heading">Spacing</h2>
+  <p id="tight-leading" class="measure" style="line-height: 1.05">These lines are packed very tightly together, so the descenders of one line almost touch the ascenders of the next line.</p>
+  <p id="long-lines">This paragraph has no maximum width, so on a wide desktop window each line stretches across the whole page and holds far more than eighty characters, which makes it hard for the eye to find the start of the next line.</p>
+
+  <h2 id="clipping-heading">Clipping</h2>
+  <span id="clipped-ellipsis" class="cell">Quarterly subscription renewal reminder</span>
+  <span id="fits-ellipsis" class="cell">Renewal</span>
+  <p id="clamped" class="clamp">This summary is clamped to two lines, so everything after the second line is hidden from the reader even though it holds the important part.</p>
+  <p id="clamp-fits" class="clamp">Short summary.</p>
+  <span id="badge-fixed" class="badge">Continue</span>
+</body>
+</html>

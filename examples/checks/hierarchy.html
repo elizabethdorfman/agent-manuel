@@ -1,0 +1,66 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Labelled hierarchy fixture</title>
+<!--
+  Labelled fixture for the UI09 hierarchy check. Renders at 390 by 844 CSS pixels.
+  See hierarchy.expected.json for the label of every id.
+
+  Planted problems:
+    #monthly-heading   an h3 (24px/700) heavier than the h2 above it (20px/600)       → H1 fail
+    #weekly-fake       a bold standalone <div> that looks like a heading but isn't     → H4 review
+    #start, #import    two buttons with the same strong purple fill compete            → H6 review
+
+  Deliberate non-problems:
+    #settings section  h2 22px/700, h3 17px/600 — correctly ordered, clearly stepped, gap above > gap below
+    #inline-strong     bold text inside a sentence (not a block on its own)
+    #learn-more        a bold link on its own line (links are excluded from fake-heading)
+    #name-label        a bold form label (labels are excluded from fake-heading)
+    #save              an outlined secondary button
+    #lede              larger intro paragraph that wraps to several lines
+-->
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#ffffff;color:#222222;font:16px/1.5 system-ui,sans-serif}
+main{padding:20px 24px}
+h1{font-size:32px;font-weight:700;line-height:1.15;margin:0 0 12px}
+h2,h3{line-height:1.2;margin:28px 0 8px}
+p{margin:0 0 12px}
+#lede{font-size:20px;color:#444444}
+.actions{display:flex;gap:12px;margin:0 0 8px}
+.primary{flex:1;height:48px;border:0;border-radius:24px;background:#5b2a86;color:#ffffff;font:inherit;font-weight:600}
+#plans-heading{font-size:20px;font-weight:600}
+#monthly-heading{font-size:24px;font-weight:700}
+#weekly-fake{font-weight:700;margin:20px 0 8px}
+#settings-heading{font-size:22px;font-weight:700}
+#alerts-heading{font-size:17px;font-weight:600}
+#learn-more{font-weight:700;color:#222222}
+label{display:block;font-weight:700;margin:0 0 4px}
+input{display:block;width:100%;height:44px;border:1px solid #bbbbbb;border-radius:8px;padding:0 12px;font:inherit;margin:0 0 12px}
+#save{height:44px;padding:0 20px;border:1px solid #5b2a86;border-radius:22px;background:transparent;color:#5b2a86;font:inherit;font-weight:600}
+</style>
+<main>
+  <h1 id="title">Budget planner</h1>
+  <p id="lede">Plan small treats without losing sight of the big trip you are saving for.</p>
+  <div class="actions">
+    <button id="start" class="primary">Start plan</button>
+    <button id="import" class="primary">Import data</button>
+  </div>
+
+  <section id="plans">
+    <h2 id="plans-heading">Plans</h2>
+    <p id="plans-body">Pick how often you want to review what you spent and what you saved.</p>
+    <h3 id="monthly-heading">Monthly</h3>
+    <p id="monthly-body">One summary at the start of each month, grouped by category.</p>
+    <div id="weekly-fake">Weekly</div>
+    <p id="weekly-body">A short check-in every Sunday evening with the week's totals.</p>
+  </section>
+
+  <section id="settings">
+    <h2 id="settings-heading">Settings</h2>
+    <p id="settings-body">Choose how the planner reminds you. You can change this <strong id="inline-strong">at any time</strong> from your profile.</p>
+    <h3 id="alerts-heading">Alerts</h3>
+    <p id="alerts-body">We send at most one reminder a day, and never after 9pm.</p>
+    <p><a id="learn-more" href="#alerts">Learn more about alerts</a></p>
+    <label id="name-label" for="name">Reminder name</label>
+    <input id="name" type="text">
+    <button id="save">Save</button>
+  </section>
+</main>

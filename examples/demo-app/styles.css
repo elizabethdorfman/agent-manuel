@@ -1,0 +1,106 @@
+/* Penny Jar demo app. Shared styles.
+   Planted bugs live in the page-specific rules at the bottom and are marked "PLANTED".
+   Deliberate look-alikes are marked "LOOK-ALIKE". The answer key is bugs.json. */
+*{box-sizing:border-box}
+:root{
+  --ink:#1E2B2F; --muted:#5B6B70; --line:#DCE5E3; --paper:#FFFFFF; --mint:#EAF5F2;
+  --jar:#0E5A52; --jar-dark:#0A4741; --copper:#C9772E; --danger:#B42318;
+}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--jar)}
+.topbar{display:flex;align-items:center;gap:10px;height:56px;padding:0 24px;border-bottom:1px solid var(--line);background:var(--paper)}
+.topbar .jar{width:26px;height:26px;flex:none}
+.brand{font-weight:700;font-size:18px;letter-spacing:-.01em;color:var(--jar);text-decoration:none}
+.screen{max-width:440px;margin:0 auto;padding:24px 24px 32px}
+h1{font-size:28px;line-height:1.15;letter-spacing:-.02em;margin:0 0 8px}
+h2{font-size:20px;line-height:1.25;margin:0 0 8px}
+h3{font-size:16px;line-height:1.3;margin:0 0 6px}
+p{margin:0 0 14px}
+.lede{color:var(--muted);margin-bottom:20px}
+label,.label{display:block;font-size:14px;font-weight:600;margin:0 0 6px}
+input[type=text],input[type=email],input[type=password],input[type=date],input[type=number],select,textarea{
+  display:block;width:100%;font:inherit;font-size:16px;color:var(--ink);background:#fff;
+  border:1px solid #C5D3D0;border-radius:12px;padding:0 14px;height:48px;margin:0 0 16px}
+textarea{height:132px;padding:12px 14px;resize:vertical;line-height:1.45}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:3px solid #8FD3C6;outline-offset:2px}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:50px;padding:0 20px;border-radius:25px;
+  font:inherit;font-weight:650;border:0;cursor:pointer;text-decoration:none;margin:0 0 12px}
+.btn-primary{background:var(--jar);color:#fff}
+.btn-primary:hover{background:var(--jar-dark)}
+.btn-secondary{background:#fff;color:var(--jar);border:1.5px solid var(--jar)}
+.btn-ghost{background:transparent;color:var(--jar)}
+.btn-danger{background:#fff;color:var(--danger);border:1.5px solid #F1C9C5}
+.card{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff;margin:0 0 16px}
+.row{display:flex;gap:12px;align-items:center}
+.footer-links{display:flex;gap:18px;justify-content:center;font-size:14px;margin-top:8px}
+.error{font-size:14px;margin:-6px 0 14px;font-weight:600}
+.banner{background:var(--mint);border-radius:12px;padding:10px 14px;font-size:14px;color:var(--jar-dark);margin:0 0 16px}
+[hidden]{display:none!important}
+
+/* ---------- Welcome ---------- */
+.hero-jar{display:block;width:120px;height:120px;margin:8px 0 20px}
+/* PLANTED TY01: "Penny Rounded" does not exist, so the wordmark renders in a fallback font. */
+#brand-name{font-family:"Penny Rounded",ui-rounded,"Avenir Next",system-ui,sans-serif}
+/* LOOK-ALIKE UI03: large bold heading at 3.56:1. Large text needs 3:1, so it passes. */
+#welcome-title{font-size:34px;font-weight:800;color:#3A9688}
+/* PLANTED UI03: light grey helper text, 1.78:1 on white. */
+#welcome-fineprint{font-size:13px;color:#C2C2C2;text-align:center;margin-top:12px}
+
+/* ---------- Journal editor ---------- */
+/* LOOK-ALIKE UI06: tips list deliberately indented 20px. */
+#journal-tips{margin:0 0 18px;padding:0 0 0 20px;color:var(--muted);font-size:15px}
+#journal-tips li{margin:0 0 2px}
+/* PLANTED UI06: the date field sits 5px right of the 24px column. */
+#entry-date{margin-left:5px;width:calc(100% - 5px)}
+/* PLANTED UI03 (error state): coral error text, 2.93:1 at 14px. */
+#journal-error{color:#EF6F6C}
+
+/* ---------- Consent ---------- */
+fieldset{border:0;padding:0;margin:0 0 16px}
+legend{font-size:14px;font-weight:600;padding:0;margin:0 0 6px}
+/* LOOK-ALIKE UI04: the radio dot is 18px, but each whole label row is a 48px target. */
+.choice{display:flex;align-items:center;gap:12px;min-height:48px;padding:0 14px;border:1px solid #C5D3D0;border-radius:12px;margin:0 0 8px;font-weight:500;font-size:16px;cursor:pointer}
+.choice input{width:18px;height:18px;margin:0;accent-color:var(--jar)}
+.agree{display:flex;align-items:flex-start;gap:12px;margin:4px 0 20px}
+.agree input{width:22px;height:22px;margin:2px 0 0;flex:none;accent-color:var(--jar)}
+/* PLANTED TY01: label text is clipped by a fixed width with nowrap. */
+#agree-label{width:220px;white-space:nowrap;overflow:hidden;font-size:15px;font-weight:500;margin:0}
+/* PLANTED UI09: "Don't send" gets the same filled primary style as "Allow". */
+#consent-decline{background:var(--copper);color:#fff}
+
+/* ---------- Review ---------- */
+.amounts{list-style:none;margin:0 0 16px;padding:0}
+.amount{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}
+.amount .what{flex:1;min-width:0}
+.amount .what strong{display:block;font-size:18px}
+.amount .what span{color:var(--muted);font-size:14px}
+.amount button{min-height:44px;min-width:44px;padding:0 10px;border:0;background:transparent;color:var(--jar);font:inherit;font-weight:600;font-size:15px;border-radius:10px;cursor:pointer}
+.amount button.remove{color:var(--muted)}
+#review-heading{font-size:20px}
+/* PLANTED UI09: the h3 renders larger and heavier than the h2 above it. */
+#review-total-title{font-size:26px;font-weight:800;margin:0 0 4px}
+.total-figure{font-size:16px;color:var(--muted);margin:0 0 18px}
+dialog{border:0;border-radius:20px;padding:20px;width:min(360px,calc(100vw - 32px));box-shadow:0 20px 60px rgba(14,40,40,.25)}
+dialog::backdrop{background:rgba(14,40,40,.45)}
+.dialog-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 14px}
+.dialog-head h2{margin:0}
+/* PLANTED UI04: the close icon is a 16 by 16px target. */
+#edit-close{width:16px;height:16px;padding:0;border:0;background:transparent;cursor:pointer;color:var(--muted);display:grid;place-items:center}
+#edit-close svg{width:16px;height:16px}
+
+/* ---------- Done ---------- */
+.done-check{width:64px;height:64px;border-radius:50%;background:var(--mint);display:grid;place-items:center;margin:8px 0 18px}
+/* LOOK-ALIKE UI01: an intentional horizontal scroller; it scrolls inside itself. */
+#done-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 0 18px}
+#done-chips span{flex:none;padding:8px 14px;border-radius:18px;background:var(--mint);color:var(--jar-dark);font-size:14px;font-weight:600}
+/* PLANTED UI01: the receipt card has a fixed width that fits at 390px but overflows at 320px. */
+#done-receipt{width:340px}
+.receipt-row{display:flex;justify-content:space-between;font-size:15px;padding:4px 0}
+
+/* ---------- Log in ---------- */
+/* PLANTED TY01: 14px input text makes iOS Safari zoom on focus. */
+#login-email{font-size:14px}
+/* LOOK-ALIKE TY01: 16px input text, no zoom. */
+#login-password{font-size:16px}
+#login-error{color:var(--danger)}

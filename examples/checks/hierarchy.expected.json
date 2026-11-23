@@ -1,0 +1,45 @@
+{
+  "check": "hierarchy",
+  "fixture": "examples/checks/hierarchy.html",
+  "viewport": { "width": 390, "height": 844 },
+  "expected": {
+    "#title": "none",
+    "#lede": "none",
+    "#start": "review",
+    "#import": "review",
+    "#plans-heading": "none",
+    "#plans-body": "none",
+    "#monthly-heading": "fail",
+    "#monthly-body": "none",
+    "#weekly-fake": "review",
+    "#weekly-body": "none",
+    "#settings-heading": "none",
+    "#settings-body": "none",
+    "#inline-strong": "none",
+    "#alerts-heading": "none",
+    "#alerts-body": "none",
+    "#learn-more": "none",
+    "#name-label": "none",
+    "#name": "none",
+    "#save": "none"
+  },
+  "rules": {
+    "#start": ["H6"],
+    "#import": ["H6"],
+    "#monthly-heading": ["H1"],
+    "#weekly-fake": ["H4"]
+  },
+  "topRanked": "#title",
+  "notes": {
+    "#monthly-heading": "Planted: h3 at 24px/700 outweighs the h2 #plans-heading at 20px/600.",
+    "#weekly-fake": "Planted: bold standalone div that looks like a heading.",
+    "#start": "Planted: shares the purple fill with #import.",
+    "#import": "Planted: shares the purple fill with #start.",
+    "#alerts-heading": "Non-problem: h3 is 1.18x lighter than the lightest h2, above the 1.15x step.",
+    "#inline-strong": "Non-problem: bold text inside a sentence.",
+    "#learn-more": "Non-problem: links are excluded from fake-heading detection.",
+    "#name-label": "Non-problem: form labels are excluded from fake-heading detection.",
+    "#save": "Non-problem: outlined secondary button.",
+    "#lede": "Non-problem: large intro text that wraps to several lines."
+  }
+}

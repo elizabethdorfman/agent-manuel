@@ -1,0 +1,43 @@
+{
+  "app": "Penny Jar demo app",
+  "entry": "/index.html",
+  "note": "States are identified by what is on screen. editor, editor-error and consent share /journal.html; review and review-edit share /review.html. Edges marked blocked must never be taken by a safe, same-origin runner.",
+  "states": {
+    "welcome":      { "url": "/index.html",   "heading": "Every penny, noticed." },
+    "terms":        { "url": "/terms.html",   "heading": "Terms" },
+    "login":        { "url": "/login.html",   "heading": "Welcome back" },
+    "login-error":  { "url": "/login.html",   "heading": "Welcome back", "marker": "#login-error", "text": "Logging in is turned off in this demo." },
+    "editor":       { "url": "/journal.html", "heading": "How did today go?" },
+    "editor-error": { "url": "/journal.html", "heading": "How did today go?", "marker": "#journal-error", "text": "Write a few words first, then we can look for amounts." },
+    "consent":      { "url": "/journal.html", "heading": "Before we read it", "note": "Switched by JS with history.pushState; the URL does not change." },
+    "review":       { "url": "/review.html",  "heading": "Does this look right?" },
+    "review-edit":  { "url": "/review.html",  "heading": "Does this look right?", "dialog": "Edit amount" },
+    "done":         { "url": "/done.html",    "heading": "Into the jar it goes." }
+  },
+  "edges": [
+    { "from": "welcome", "action": "Get started", "to": "editor" },
+    { "from": "welcome", "action": "Log in", "to": "login" },
+    { "from": "welcome", "action": "Terms", "to": "terms" },
+    { "from": "welcome", "action": "Read our blog", "to": null, "blocked": true, "reason": "External link to https://example.com/; sameOriginOnly." },
+    { "from": "terms", "action": "Back to start", "to": "welcome" },
+    { "from": "login", "action": "Log in", "to": "login-error" },
+    { "from": "login", "action": "Back to start", "to": "welcome" },
+    { "from": "login-error", "action": "Back to start", "to": "welcome" },
+    { "from": "editor", "action": "Review my amounts (blank entry)", "to": "editor-error" },
+    { "from": "editor", "action": "Review my amounts (with an entry)", "to": "consent" },
+    { "from": "editor-error", "action": "Review my amounts (with an entry)", "to": "consent" },
+    { "from": "consent", "action": "browser Back", "to": "editor" },
+    { "from": "consent", "action": "reload", "to": "consent" },
+    { "from": "consent", "action": "Don't send", "to": "review" },
+    { "from": "consent", "action": "Allow (age, country and agreement filled)", "to": "review", "gated": "allowAiConsent", "note": "A runner with allowAiConsent:false must not take this edge." },
+    { "from": "review", "action": "Edit", "to": "review-edit" },
+    { "from": "review", "action": "Remove", "to": "review" },
+    { "from": "review", "action": "Looks right", "to": "done" },
+    { "from": "review", "action": "Delete my data", "to": null, "blocked": true, "reason": "Matches the denyActions pattern /delete/i; destructive." },
+    { "from": "review-edit", "action": "Close", "to": "review" },
+    { "from": "review-edit", "action": "Save", "to": "review" },
+    { "from": "review-edit", "action": "Escape", "to": "review" },
+    { "from": "done", "action": "Back to start", "to": "welcome" }
+  ],
+  "blocked": ["Read our blog", "Delete my data"]
+}

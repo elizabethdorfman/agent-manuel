@@ -49,9 +49,9 @@ export function analyze(collected, ctx) {
   };
 }
 
-// Variants are EXTRA passes (decided 2026-11-22). The runner always does the normal pass first, then one extra
-// collect+analyze per variant, with ctx.variant set. Its findings get the variant's id suffix, e.g. "-200".
-// A check whose base pass is meaningless sets meta.variantsOnly = true, as reflow does for its 320px pass.
+// Variants, as implemented by src/runner/checks.mjs:
+//  - a variant WITH an `id` is an EXTRA pass after the normal pass (typography's "-200" text scale), with ctx.variant set;
+//  - variants WITHOUT an `id` are setup applied around the check's single pass (reflow's 320px viewport).
 // A variant may carry `undo: {method, params}`; the runner applies it and then always re-applies the base viewport.
 // Optional hook: export async function gather(send, collected) -> ctx.extra. CDP-side data (typography's fonts)
 // is gathered right after collect, in the same page state.

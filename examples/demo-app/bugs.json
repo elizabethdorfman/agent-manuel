@@ -1,0 +1,36 @@
+{
+  "app": "Penny Jar demo app",
+  "viewport": { "width": 390, "height": 844 },
+  "columnLeft": 24,
+  "expectedValues": {
+    "fail": "A measured rule is broken; the check should report status fail.",
+    "review": "A lead the check should surface with status review for the AI or a person.",
+    "none": "The check must not report anything for this element."
+  },
+  "bugs": [
+    { "screen": "welcome", "state": "welcome", "stateHint": "Open index.html.", "selector": "#brand-name", "category": "typography", "checkId": "TY01", "planted": true, "expected": "review", "why": "The wordmark declares \"Penny Rounded\" first, which does not exist, so it renders in a fallback font." },
+    { "screen": "welcome", "state": "welcome", "stateHint": "Open index.html.", "selector": "#welcome-fineprint", "category": "contrast", "checkId": "UI03", "planted": true, "expected": "fail", "why": "13px #C2C2C2 helper text on white is 1.78:1, below 4.5:1." },
+    { "screen": "welcome", "state": "welcome", "stateHint": "Open index.html.", "selector": "#welcome-title", "category": "contrast", "checkId": "UI03", "planted": false, "expected": "none", "why": "34px 800-weight heading at 3.56:1 is large text, which only needs 3:1." },
+    { "screen": "welcome", "state": "welcome", "stateHint": "Open index.html.", "selector": "#get-started", "category": "hierarchy", "checkId": "UI09", "planted": false, "expected": "none", "why": "One filled primary button with an outlined secondary under it is a clear ranking." },
+
+    { "screen": "journal editor", "state": "editor", "stateHint": "Open journal.html.", "selector": "#entry-date", "category": "alignment", "checkId": "UI06", "planted": true, "expected": "review", "why": "The date field's left edge is x=29, 5px right of the x=24 column every other field shares; no rule declares it." },
+    { "screen": "journal editor", "state": "editor", "stateHint": "Open journal.html.", "selector": "#journal-tips", "category": "alignment", "checkId": "UI06", "planted": false, "expected": "none", "why": "A bulleted list indented a deliberate 20px, beyond the 12px near limit." },
+    { "screen": "journal editor", "state": "editor-error", "stateHint": "Open journal.html and click \"Review my amounts\" with the entry blank.", "selector": "#journal-error", "category": "contrast", "checkId": "UI03", "planted": true, "expected": "fail", "why": "14px coral #EF6F6C error text on white is 2.93:1, below 4.5:1." },
+
+    { "screen": "AI consent", "state": "consent", "stateHint": "Open journal.html, type an entry, click \"Review my amounts\".", "selector": "#consent-decline", "category": "flow", "checkId": "FL02", "planted": true, "expected": "fail", "why": "tabindex=\"1\" sends the first Tab to \"Don't send\" before the age, country and agreement fields. Labelled for the later focus-order check." },
+    { "screen": "AI consent", "state": "consent", "stateHint": "Open journal.html, type an entry, click \"Review my amounts\".", "selector": "#agree-label", "category": "typography", "checkId": "TY01", "planted": true, "expected": "fail", "why": "The agreement label has a fixed 220px width with nowrap and overflow hidden, so its text is cut off." },
+    { "screen": "AI consent", "state": "consent", "stateHint": "Open journal.html, type an entry, click \"Review my amounts\".", "selector": "#consent-decline", "category": "hierarchy", "checkId": "UI09", "planted": true, "expected": "review", "why": "\"Don't send\" is a filled button the same size as \"Allow\", so two primary actions compete." },
+    { "screen": "AI consent", "state": "consent", "stateHint": "Open journal.html, type an entry, click \"Review my amounts\".", "selector": "#country-us-row", "category": "tap-targets", "checkId": "UI04", "planted": false, "expected": "none", "why": "The radio dot is 18px, but its whole label row is a 48px-tall target." },
+
+    { "screen": "review", "state": "review", "stateHint": "Reach consent, then click \"Don't send\" (or fill the fields and click \"Allow\").", "selector": "#review-total-title", "category": "hierarchy", "checkId": "UI09", "planted": true, "expected": "review", "why": "The h3 \"Today's total\" renders at 26px/800, larger and heavier than the 20px h2 \"Your amounts\" above it." },
+    { "screen": "review", "state": "review", "stateHint": "Reach consent, then click \"Don't send\".", "selector": "#remove-1", "category": "tap-targets", "checkId": "UI04", "planted": false, "expected": "none", "why": "Looks like a small text link, but its button box is at least 44 by 44px." },
+    { "screen": "review", "state": "review-edit", "stateHint": "Reach review, then click the first \"Edit\".", "selector": "#edit-close", "category": "tap-targets", "checkId": "UI04", "planted": true, "expected": "fail", "why": "The dialog's close icon is a 16 by 16px target, below 24px." },
+    { "screen": "review", "state": "review-edit", "stateHint": "Reach review, then click the first \"Edit\".", "selector": "#edit-save", "category": "tap-targets", "checkId": "UI04", "planted": false, "expected": "none", "why": "Full-width 50px-tall Save button." },
+
+    { "screen": "done", "state": "done", "stateHint": "Reach review, then click \"Looks right\".", "selector": "#done-receipt", "category": "reflow", "checkId": "UI01", "planted": true, "expected": "fail", "why": "The receipt card has a fixed 340px width: it fits at 390px but runs past the viewport edge at 320px." },
+    { "screen": "done", "state": "done", "stateHint": "Reach review, then click \"Looks right\".", "selector": "#done-chips", "category": "reflow", "checkId": "UI01", "planted": false, "expected": "none", "why": "The streak chips scroll horizontally inside their own overflow-x:auto box; the page does not scroll." },
+
+    { "screen": "log in", "state": "login", "stateHint": "Open login.html.", "selector": "#login-email", "category": "typography", "checkId": "TY01", "planted": true, "expected": "fail", "why": "The email input uses 14px text, which makes iOS Safari zoom in on focus." },
+    { "screen": "log in", "state": "login", "stateHint": "Open login.html.", "selector": "#login-password", "category": "typography", "checkId": "TY01", "planted": false, "expected": "none", "why": "The password input uses 16px text, so it does not trigger the zoom." }
+  ]
+}

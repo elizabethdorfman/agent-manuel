@@ -1,0 +1,56 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Labelled tap-target fixture</title>
+<!--
+  Labelled fixture for the UI04 tap-target check. Renders at 390 by 844 CSS pixels.
+  See targets.expected.json for the label of every id.
+
+  Planted problems:
+    #icon-close    16×16 icon button 2px from #good, so the spacing exception cannot apply → T1 fail
+    #primary-40    a full-width filled button only 40px tall                                → T2 review
+    #obstructed    a 48px button whose centre is covered by #overlay (a loading veil)        → T3 fail
+
+  Deliberate non-problems:
+    #good          48×48 filled icon button
+    #spaced-link   a small (about 37×16) link alone on its line with lots of room → passes via the WCAG 2.5.8 spacing exception
+    #inline-link   a link inside a sentence → exempt
+    #agree         16×16 checkbox whose wrapping label makes the hit area 36px tall
+    #email         44px text field with a label[for] (#email-label merges into its hit area)
+    #continue      a 48px filled button
+-->
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#ffffff;color:#222222;font:16px/1.5 system-ui,sans-serif}
+main{padding:20px 24px}
+p{margin:0 0 16px}
+.toolbar{display:flex;align-items:center;justify-content:flex-end;margin:0 0 24px}
+#icon-close{width:16px;height:16px;padding:0;border:0;background:#dddddd;border-radius:4px;margin-right:2px;font-size:10px;line-height:16px}
+#good{width:48px;height:48px;padding:0;border:0;border-radius:12px;background:#5b2a86;color:#fff;font-size:20px}
+#spaced{margin:40px 0;font-size:13px}
+#spaced-link{color:#5b2a86}
+label{display:block;margin:0 0 4px}
+input[type=text]{display:block;width:100%;height:44px;border:1px solid #bbbbbb;border-radius:8px;padding:0 12px;font:inherit;margin:0 0 24px}
+#agree-label{display:inline-flex;align-items:center;gap:8px;padding:6px 0;margin:0 0 24px}
+#agree{width:16px;height:16px;margin:0}
+.btn{display:block;width:100%;border:0;border-radius:24px;background:#5b2a86;color:#fff;font:inherit;font-weight:600}
+#primary-40{height:40px;margin:0 0 24px}
+#continue{height:48px;margin:0 0 24px}
+.veil-wrap{position:relative;margin:0 0 24px}
+#obstructed{height:48px}
+#overlay{position:absolute;inset:0;background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;font-size:14px}
+</style>
+<main>
+  <div class="toolbar">
+    <button id="icon-close" aria-label="Close">×</button>
+    <button id="good" aria-label="Menu">≡</button>
+  </div>
+  <p id="sentence">Read our <a id="inline-link" href="#privacy">privacy policy</a> before you start saving.</p>
+  <label id="email-label" for="email">Email</label>
+  <input id="email" type="text">
+  <label id="agree-label"><input id="agree" type="checkbox"> I agree to the terms</label>
+  <button id="primary-40" class="btn">Create account</button>
+  <div class="veil-wrap">
+    <button id="obstructed" class="btn">Pay now</button>
+    <div id="overlay">Loading…</div>
+  </div>
+  <button id="continue" class="btn">Continue</button>
+  <p id="spaced"><a id="spaced-link" href="#terms">Terms</a></p>
+</main>

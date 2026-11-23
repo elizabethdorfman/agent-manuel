@@ -1,0 +1,47 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Labelled reflow fixture</title>
+<!--
+  Labelled fixture for the UI01 reflow check. The check renders it at 320 CSS px wide
+  (its variant), whatever the page viewport is. See reflow.expected.json for every id.
+
+  Planted problems:
+    #hero-img      an image fixed at 400px wide                                   → R1 fail
+    #long-string   a long unbroken string (a referral link) with no wrapping rules → R1 fail
+    #price-row     a nowrap row with min-width 360px inside an overflow:hidden card → R2 review
+
+  Deliberate non-problems:
+    #table-scroll  a 600px table inside an overflow-x:auto container (allowed two-axis content)
+    #wide-table, #cell-1  descendants of that scroller
+    #fluid-img     an 800px-wide image constrained by max-width:100%
+    #intro         ordinary wrapping text
+    #wrapped-url   another long URL, made to wrap with overflow-wrap:anywhere
+    #avatar        a round overflow:hidden frame whose image fits exactly
+-->
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#222;font:16px/1.5 system-ui,sans-serif}
+main{padding:16px}
+p{margin:0 0 12px}
+img{display:block}
+#hero-img{width:400px;height:120px;max-width:none;margin:0 0 12px}
+#fluid-img{width:800px;max-width:100%;height:auto;margin:0 0 12px}
+#table-scroll{overflow-x:auto;margin:0 0 12px;border:1px solid #ddd}
+#wide-table{width:600px;border-collapse:collapse}
+#wide-table td{border:1px solid #ddd;padding:6px}
+#wrapped-url{overflow-wrap:anywhere}
+#price-card{overflow:hidden;border:1px solid #ddd;border-radius:12px;padding:12px;margin:0 0 12px}
+#price-row{min-width:360px;white-space:nowrap}
+#avatar{width:48px;height:48px;border-radius:50%;overflow:hidden}
+#avatar-img{width:48px;height:48px}
+</style>
+<main>
+  <p id="intro">Share your savings plan with a friend and you both get a month free. This paragraph wraps normally at any width.</p>
+  <img id="hero-img" alt="Savings chart" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120'%3E%3Crect width='400' height='120' fill='%235b2a86'/%3E%3C/svg%3E">
+  <img id="fluid-img" alt="Wide photo" width="800" height="200" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='200'%3E%3Crect width='800' height='200' fill='%23e8dff0'/%3E%3C/svg%3E">
+  <p id="long-string">https://coolgirlmath.example/referral/ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdef</p>
+  <p id="wrapped-url">https://coolgirlmath.example/referral/ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdef</p>
+  <div id="table-scroll">
+    <table id="wide-table"><tr><td id="cell-1">Week</td><td>Treats</td><td>Saved</td><td>Running total for the trip fund</td></tr></table>
+  </div>
+  <div id="price-card"><div id="price-row">Annual plan · $48 · billed once a year</div></div>
+  <div id="avatar"><img id="avatar-img" alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%23f2a7c3'/%3E%3C/svg%3E"></div>
+</main>

@@ -1,0 +1,44 @@
+{
+  "check": "targets",
+  "fixture": "examples/checks/targets.html",
+  "viewport": { "width": 390, "height": 844 },
+  "expected": {
+    "#icon-close": "fail",
+    "#good": "none",
+    "#sentence": "none",
+    "#inline-link": "none",
+    "#email-label": "none",
+    "#email": "none",
+    "#agree-label": "none",
+    "#agree": "none",
+    "#primary-40": "review",
+    "#obstructed": "fail",
+    "#overlay": "none",
+    "#continue": "none",
+    "#spaced": "none",
+    "#spaced-link": "none"
+  },
+  "rules": {
+    "#icon-close": ["T1"],
+    "#primary-40": ["T2"],
+    "#obstructed": ["T3"]
+  },
+  "measurements": {
+    "#icon-close": { "width": 16, "height": 16, "nearest": "#good" },
+    "#primary-40": { "height": 40 },
+    "#obstructed": { "coveredBy": "#overlay" }
+  },
+  "hitAreas": {
+    "#agree": { "minHeight": 24, "mergedLabels": ["#agree-label"] },
+    "#email": { "mergedLabels": ["#email-label"] }
+  },
+  "notes": {
+    "#icon-close": "Planted: 16x16 icon button 2px from #good; its 24px circle overlaps #good.",
+    "#primary-40": "Planted: full-width filled button only 40px tall (under 44px).",
+    "#obstructed": "Planted: a loading veil (#overlay) covers the button's centre.",
+    "#spaced-link": "Non-problem: about 37x16 but no other target within its 24px circle (WCAG 2.5.8 spacing exception).",
+    "#inline-link": "Non-problem: inline link inside a sentence (WCAG 2.5.8 inline exception).",
+    "#agree": "Non-problem: 16x16 checkbox; the wrapping label makes the hit area 36px tall.",
+    "#good": "Non-problem: 48x48 filled button."
+  }
+}

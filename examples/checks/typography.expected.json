@@ -1,0 +1,51 @@
+{
+  "check": "typography",
+  "fixture": "examples/checks/typography.html",
+  "viewports": [{ "width": 390, "height": 844 }, { "width": 1280, "height": 800 }],
+  "note": "A string applies at every viewport; an object is keyed by viewport width. 'page' holds the page-level findings (selector 'body'). 'variants' lists the 200% text-scale pass (ids end in -200). Fonts assume macOS or Windows (Arial installed).",
+  "elements": {
+    "#title":            { "expected": "none",   "note": "28px bold heading in system-ui." },
+    "#fonts-heading":    { "expected": "none" },
+    "#fallback":         { "expected": "fail",   "rule": "fallback", "note": "First family 'Agent Manuel Missing Font' is not installed; Arial painted." },
+    "#webfont-failed":   { "expected": "fail",   "rule": "fallback", "note": "@font-face 'Broken Webfont' points at a missing file (status error); Arial painted." },
+    "#named-family":     { "expected": "none",   "note": "Asks for Arial, gets Arial." },
+    "#local-face":       { "expected": "none",   "note": "@font-face 'Fixture Sans' loaded from local(Arial); the painted name differs but the face loaded." },
+    "#mono-line":        { "expected": "none" },
+    "#mono":             { "expected": "none",   "note": "Monospace is excluded from the family count." },
+    "#sizes-heading":    { "expected": "none" },
+    "#email-label":      { "expected": "none",   "note": "16px label." },
+    "#email-14":         { "expected": "fail",   "rule": "input-size", "fontSize": 14, "note": "14px input: iOS zooms on focus." },
+    "#name-label":       { "expected": "none" },
+    "#name-16":          { "expected": "none",   "note": "16px input: look-alike non-problem." },
+    "#notes-label":      { "expected": "none" },
+    "#notes-16":         { "expected": "none",   "note": "16px textarea." },
+    "#legal-10":         { "expected": "fail",   "rule": "tiny", "fontSize": 10, "note": "10px text is under 12px." },
+    "#caption-13":       { "expected": { "390": "review", "1280": "none" }, "rule": "small-body", "fontSize": 13, "note": "Deliberately small caption: a lead on phones, fine on desktop, never a fail." },
+    "#body-16":          { "expected": "none",   "note": "Correct 16px body, line-height 1.5, 34em measure." },
+    "#sr-hint":          { "expected": "none",   "note": "Visually hidden 10px screen-reader text: skipped, and its 1px overflow box is not 'clipped'." },
+    "#hidden-small":     { "expected": "none",   "note": "display:none 8px text: skipped." },
+    "#spacing-heading":  { "expected": "none" },
+    "#tight-leading":    { "expected": "review", "rule": "line-height", "ratio": 1.05 },
+    "#long-lines":       { "expected": { "390": "none", "1280": "review" }, "rule": "line-length", "note": "No max-width: ~169 characters per line at 1280px, ~48 at 390px." },
+    "#clipping-heading": { "expected": "none" },
+    "#clipped-ellipsis": { "expected": "fail",   "rule": "clipped", "note": "160px nowrap cell with ellipsis; the text needs ~291px." },
+    "#fits-ellipsis":    { "expected": "none",   "note": "Same ellipsis cell, but the text fits." },
+    "#clamped":          { "expected": "fail",   "rule": "clipped", "note": "-webkit-line-clamp: 2 hides lines 3 to 5." },
+    "#clamp-fits":       { "expected": "none",   "note": "Same clamp, one line of text." },
+    "#badge-fixed":      { "expected": "none",   "note": "Fixed 32px-high badge: fits at 100%, clips at 200% (see variants)." }
+  },
+  "page": {
+    "TY01-family-count": "none",
+    "TY01-size-count": "none",
+    "TY01-weight-count": "none"
+  },
+  "variants": {
+    "text-200": {
+      "#clipped-ellipsis": "fail",
+      "#clamped": "fail",
+      "#badge-fixed": "fail",
+      "#fits-ellipsis": "none",
+      "#clamp-fits": "none"
+    }
+  }
+}

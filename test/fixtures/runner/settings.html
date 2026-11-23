@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{font:16px system-ui;margin:24px}button,a{display:inline-block;margin:8px 8px 8px 0;padding:10px 14px}</style></head>
+<body><main><h1>Settings</h1>
+<button type="button" id="help">Open help</button>
+<button type="button" id="delete" onclick="fetch('/api/delete',{method:'POST'})">Delete account</button>
+<a href="/">Home</a></main>
+<dialog id="dlg" aria-label="Help"><h2>Help</h2><p>Ask us anything.</p><button type="button" onclick="this.closest('dialog').close()">Close</button></dialog>
+<script>document.getElementById('help').onclick=()=>document.getElementById('dlg').showModal();</script>
+</body></html>
