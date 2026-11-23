@@ -8,14 +8,17 @@
  *   const result = contrast.analyze(collected, {viewport, config, screenshot: Buffer.from(shot.data, 'base64')});
  *
  * The screenshot must be taken right after collect() in the same page state, and must cover
- * collected.capture (document coordinates from the top-left of the page). If it covers some
- * other region, pass ctx.screenshotClip = {x, y, width, height} in document CSS px. Device
- * pixel ratio is handled: the scale is png.width / clip.width.
+ * collected.capture (document coordinates from the top-left of the page). Its region is taken
+ * from the PNG itself (png size / devicePixelRatio, from the top-left), which also holds when
+ * the runner's screenshot is narrower than innerWidth. If it covers some other region, pass
+ * ctx.screenshotClip = {x, y, width, height} in document CSS px.
  * Without a screenshot every run is skipped (summary.skipped.no-screenshot).
  *
  * Background: pixels in a 4px band around the text's line boxes (inside the block that holds
  * the text), excluding every text line box, image and control inside that block, so glyphs
- * are never sampled. If that band is too thin, the pixels inside the line boxes that are far
+ * are never sampled. Borders are never background: for controls and any block with a visible
+ * border the block is inset by its border widths + 2px. Controls (inputs, textareas, selects)
+ * are sampled across that whole inner box minus the measured text (run.sampleBox). If that band is too thin, the pixels inside the line boxes that are far
  * from the text colour are used instead.
  *
  * ctx.config (appConfig.checks.contrast): { uniformSpread: 1.15, minSamples: 16 }
@@ -56,7 +59,8 @@ export function sampleBackground(img, clip, run) {
   };
   const shotRect = {x: clip.x, y: clip.y, width: img.width / scale, height: img.height / scale};
   const text = union(run.textRects);
-  const area = intersect(intersect({x: text.x - PAD, y: text.y - PAD, width: text.width + 2 * PAD, height: text.height + 2 * PAD}, run.backgroundBox), shotRect);
+  const around = run.sampleBox ?? {x: text.x - PAD, y: text.y - PAD, width: text.width + 2 * PAD, height: text.height + 2 * PAD};
+  const area = intersect(intersect(around, run.backgroundBox), shotRect);
   if (!area.width || !area.height) return {samples: [], method: 'outside-screenshot'};
   const occupied = [...run.textRects, ...(run.occupied ?? [])];
   const step = Math.max(1 / scale, Math.sqrt(area.width * area.height / MAX_SAMPLES));
@@ -113,7 +117,11 @@ export function analyze(collected, ctx = {}) {
     img = decoded.get(ctx.screenshot);
     if (!img) { img = decodePng(ctx.screenshot); if (typeof ctx.screenshot === 'object') decoded.set(ctx.screenshot, img); }
   }
-  const clip = ctx.screenshotClip ?? collected.capture ?? {x: 0, y: 0, width: ctx.viewport?.width ?? img?.width};
+  // A full-page screenshot starts at the page's top-left at the device pixel ratio, so its own
+  // size gives the clip. Not innerWidth: under mobile emulation a page that overflows sideways
+  // widens innerWidth (390 → 522) while the runner's screenshot stays viewport-wide.
+  const dpr = collected.viewport?.dpr || 1;
+  const clip = ctx.screenshotClip ?? (img ? {x: 0, y: 0, width: img.width / dpr, height: img.height / dpr} : collected.capture ?? {x: 0, y: 0, width: ctx.viewport?.width});
   let measured = 0;
   const results = [];
   for (const run of collected.runs ?? []) {

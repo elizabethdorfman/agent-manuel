@@ -1,0 +1,32 @@
+{
+  "check": "readability",
+  "fixture": "examples/checks/readability.html",
+  "viewports": [{ "width": 390, "height": 844 }, { "width": 1280, "height": 800 }],
+  "note": "expected is the worst outcome of the normal pass (a string, or one per viewport width); rules lists its measurements.rule values. text-200 is the 200% text-scale pass (ids end in -200); unlisted elements must be none there. A finding counts for a label when its selector is the id or starts with '<id> > '.",
+  "elements": {
+    "#banner":              { "expected": "none", "note": "White on #222: readable. It is the cover, not the covered." },
+    "#covered":             { "expected": "fail", "rules": ["covered"], "coveredBy": "#banner", "note": "Under the fixed banner. Reported once as covered; the contrast sampler would also fail it (dark text over the dark banner), but that finding is suppressed." },
+    "#heading":             { "expected": "none" },
+    "#readable":            { "expected": "none" },
+    "#under-clear-overlay": { "expected": "none", "note": "A transparent layer sits on top but paints nothing." },
+    "#clear-overlay":       { "expected": "none" },
+    "#link-para":           { "expected": "none", "note": "The hit test lands on its own link: a descendant, not a cover." },
+    "#inline-link":         { "expected": "none" },
+    "#light-grey":          { "expected": "fail", "rules": ["contrast"], "ratio": 1.92 },
+    "#photo-caption":       { "expected": "review", "rules": ["contrast"], "note": "White over pale sky and dark hills: varied background." },
+    "#email":               { "expected": "none", "ratioBetween": [6.5, 7.5], "note": "Regression: the coolgirlmath.com sign-in field. #595659 on rgba(255,249,245,.85) is about 7:1; the old sampler read the rgb(138,125,118) border and reported 1.82:1." },
+    "#placeholder-faint":   { "expected": "fail", "rules": ["contrast"], "ratio": 1.61, "note": "Empty field: the colour comes from ::placeholder (#c8c8c8), not the field's dark text colour." },
+    "#ellipsis-cut":        { "expected": "fail", "rules": ["cut-off"] },
+    "#ellipsis-fits":       { "expected": "none" },
+    "#clamped":             { "expected": "fail", "rules": ["cut-off"] },
+    "#badge":               { "expected": "none", "note": "Fits at 100%; cut at 200%." },
+    "#long-url":            { "expected": { "390": "fail", "1280": "none" }, "rules": { "390": ["overflow"], "1280": [] }, "kind": "off-screen" },
+    "#spill":               { "expected": "fail", "rules": ["overflow"], "kind": "spills" },
+    "#skip-link":           { "expected": "none", "note": "Entirely off screen on purpose (a skip link), not partly cut." },
+    "#table-wrap":          { "expected": "none" },
+    "#wide-table":          { "expected": "none", "note": "Wider than the screen, but inside an overflow-x:auto container." }
+  },
+  "variants": {
+    "text-200": { "#ellipsis-cut": "fail", "#clamped": "fail", "#badge": "fail" }
+  }
+}

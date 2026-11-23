@@ -1,6 +1,6 @@
 # MVP: visit every screen and check each one
 
-> **Scope for now (2026-11-22):** three checks are active: **alignment (UI06)**, **visual hierarchy (UI09)** and **contrast (UI03)**. Typography, tap targets and reflow are built and tested, but parked. Next: product-design and UX review through **persona journeys** (see docs/PERSONAS.md). The explorer navigates just to reach each screen, then each screen is checked and reported on its own. Flow checks (does Back return to the editor, does focus land in the right place, does a draft survive a refresh) are planned next, but they don't produce findings yet.
+> **Scope for now (2026-11-22):** three checks are active: **alignment (UI06)**, **visual hierarchy (UI09)** and **readability (RD01 = contrast + cut-off + overflow + covered)**. Readability reuses the contrast (UI03) and typography clipping logic; contrast, typography, tap targets and reflow are built and tested as modules of their own, but parked. Next: product-design and UX review through **persona journeys** (see docs/PERSONAS.md). The explorer navigates just to reach each screen, then each screen is checked and reported on its own. Flow checks (does Back return to the editor, does focus land in the right place, does a draft survive a refresh) are planned next, but they don't produce findings yet.
 
 **Goal:** point the tool at a preview URL. It reaches every screen and state it can, checks each one, and returns one report showing what it reached and what's wrong.
 
@@ -23,7 +23,8 @@ On each newly reached state, the tool captures the screen at 390px and at 1280px
 | UI06 alignment | Shared edges and near-misses (exists) |
 | UI09 hierarchy | Visual-weight ranking of each element |
 | Typography | Rendered font vs declared font, minimum size, line height, clipped text |
-| UI03 contrast | Text colour vs the background pixels behind the text |
+| RD01 readability | Contrast (text colour vs the pixels behind it), text cut off (also at 200% text size), text off the screen or out of its box, text covered by another element |
+| UI03 contrast | Text colour vs the background pixels behind the text (parked; part of RD01) |
 | UI04 tap targets | Clickable area of each control vs 24px and 44px |
 | UI01 reflow | Horizontal overflow at 320px |
 

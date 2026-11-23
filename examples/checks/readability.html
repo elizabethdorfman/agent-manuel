@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RD01 readability fixture</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 16px; font: 16px/1.5 system-ui, sans-serif; color: #1a1a1a; background: #fff; }
+  h1 { font-size: 28px; line-height: 1.2; margin: 0 0 16px; }
+  p, .row { margin: 0 0 14px; }
+
+  /* R4: a fixed banner over the first paragraph. It is dark, so without the R4 rule the
+     contrast sampler would read the banner as the paragraph's background and fail it. */
+  #banner { position: fixed; top: 0; left: 0; right: 0; height: 72px; padding: 22px 16px; background: #222; color: #fff; z-index: 10; margin: 0; }
+  #covered { margin: 0 0 80px; }
+  /* Look-alike: a transparent decorative layer over a paragraph paints nothing, so nothing is covered. */
+  .stack { position: relative; }
+  #clear-overlay { position: absolute; inset: 0; }
+
+  /* R1 */
+  .photo { color: #fff; width: 300px; height: 80px; padding: 28px 18px 0; border-radius: 8px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='80'%3E%3Crect width='320' height='80' fill='%23cfe6f5'/%3E%3Cpath d='M0 46 Q60 30 120 44 T240 40 T320 36 V80 H0Z' fill='%23233d1f'/%3E%3Ccircle cx='270' cy='18' r='12' fill='%23fff6c2'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; }
+
+  /* The coolgirlmath.com sign-in field: dark brown border, cream translucent fill, dark placeholder.
+     Fixed height with no vertical padding, so the text box touches the border: the old sampler
+     read the border colour as the background and reported 1.82:1. The real ratio is about 7:1. */
+  .field { font: inherit; display: block; width: 300px; height: 44px; padding: 0 14px; margin: 0 0 14px; border-radius: 12px;
+    border: 1.5px solid rgb(138, 125, 118); background: rgba(255, 249, 245, 0.85); color: #1a1a1a; }
+  #email::placeholder { color: #595659; opacity: 1; }
+  /* Placeholder colour is read from ::placeholder, not from the field's own (dark) colour. */
+  #placeholder-faint::placeholder { color: #c8c8c8; opacity: 1; }
+
+  /* R2 */
+  .label { display: block; width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0 0 14px; }
+  #clamped { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; width: 300px; }
+  #badge { display: inline-block; height: 24px; width: 120px; padding: 0 8px; overflow: hidden; white-space: nowrap;
+    font-size: 13px; line-height: 24px; border-radius: 12px; background: #e8f0fe; color: #1a3a7a; }
+
+  /* R3 */
+  #spill { width: 120px; white-space: nowrap; margin: 0 0 14px; }
+  #skip-link { position: absolute; left: -9999px; top: 0; }
+  #table-wrap { overflow-x: auto; max-width: 100%; margin: 0 0 14px; }
+  #wide-table { border-collapse: collapse; width: 900px; }
+  #wide-table td { border: 1px solid #ccc; padding: 6px; white-space: nowrap; }
+</style>
+</head>
+<body>
+  <p id="banner">Cookie notice: we use cookies.</p>
+  <p id="covered">This paragraph sits under the fixed banner.</p>
+
+  <h1 id="heading">Readability fixture</h1>
+  <p id="readable">A normal paragraph in dark text on white.</p>
+  <div class="stack"><p id="under-clear-overlay">A paragraph under a transparent layer.</p><div id="clear-overlay"></div></div>
+  <p id="link-para">Read the <a id="inline-link" href="#x" style="color: #0645ad">privacy notice</a> first.</p>
+
+  <p id="light-grey" style="color: #bbbbbb">Light grey text on white is hard to read.</p>
+  <div class="row"><div id="photo-caption" class="photo">Caption across sky and hills</div></div>
+
+  <input id="email" class="field" type="email" placeholder="you@example.com">
+  <input id="placeholder-faint" class="field" type="text" placeholder="Pale placeholder">
+
+  <span id="ellipsis-cut" class="label">A label far too long to fit in its box</span>
+  <span id="ellipsis-fits" class="label">Short label</span>
+  <p id="clamped">This paragraph is clamped to two lines, but it has much more to say than two lines can hold at this width, so the rest is hidden.</p>
+  <div class="row"><span id="badge">Limited</span></div>
+
+  <p id="long-url">https://www.example.com/a/very/long/unbroken/path/that/never/wraps</p>
+  <div id="spill">Text wider than its narrow box</div>
+  <a id="skip-link" href="#heading">Skip to content</a>
+  <div id="table-wrap"><table id="wide-table"><tr><td>A wide table that scrolls sideways inside its own container</td><td>Second column of the wide table</td></tr></table></div>
+</body>
+</html>

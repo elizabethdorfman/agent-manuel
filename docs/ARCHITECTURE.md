@@ -12,6 +12,7 @@ src/
     index.mjs             Registry: export const checks = [alignment, typography, ...]
     alignment/            Port of src/collect.mjs + src/analyze.mjs (Stream C)
     typography/  contrast/            (Stream B)
+    readability/          RD01: contrast + cut-off + overflow + covered, built on contrast/ and typography/
     hierarchy/   targets/   reflow/   (Stream C)
   judge/                  AI judge (later: needs the OpenRouter key)
   report/                 Run report (Stream A builds a minimal one)

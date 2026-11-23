@@ -44,6 +44,18 @@ export function collectContrast(options = {}) {
     }
     return opacity;
   };
+  // A border is not background. For controls and any box with a visible border, sample
+  // inside the padding box: inset by each border width plus 2px (anti-aliased edges and radii).
+  const visibleBorder = s => ['Top', 'Right', 'Bottom', 'Left'].some(k => parseFloat(s['border' + k + 'Width']) > 0 && !/^(none|hidden)$/.test(s['border' + k + 'Style']) && rgba(s['border' + k + 'Color'])[3] > 0.01);
+  const insideBorder = (p, s) => {
+    const r = docRect(p.getBoundingClientRect());
+    const t = parseFloat(s.borderTopWidth) + 2, rt = parseFloat(s.borderRightWidth) + 2, b = parseFloat(s.borderBottomWidth) + 2, l = parseFloat(s.borderLeftWidth) + 2;
+    return { x: r.x + l, y: r.y + t, width: Math.max(0, r.width - l - rt), height: Math.max(0, r.height - t - b) };
+  };
+  const measure = (text, s) => {
+    g.font = [s.fontStyle, s.fontWeight, s.fontSize, s.fontFamily].join(' ');
+    return g.measureText(text).width + Math.max(0, parseFloat(s.letterSpacing) || 0) * text.length;
+  };
   const bgBox = e => {
     for (let p = e; p && p !== document.documentElement; p = p.parentElement) {
       if (getComputedStyle(p).display !== 'inline' && p.getBoundingClientRect().width > 0) return p;
@@ -89,11 +101,22 @@ export function collectContrast(options = {}) {
       const usePlaceholder = !e.value && e.getAttribute('placeholder');
       text = e.value || e.getAttribute('placeholder') || '';
       if (!text.trim()) { skipped.push({ selector: sel, reason: 'empty' }); continue; }
-      color = rgba(usePlaceholder ? getComputedStyle(e, '::placeholder').color : (s.webkitTextFillColor || s.color));
+      // An empty field paints its placeholder, styled by ::placeholder (colour, fill colour, opacity).
+      const ps = usePlaceholder ? getComputedStyle(e, '::placeholder') : null;
+      color = rgba(ps ? (ps.webkitTextFillColor || ps.color) : (s.webkitTextFillColor || s.color));
+      if (ps) color[3] = Math.round(color[3] * Number(ps.opacity || 1) * 1000) / 1000;
       const b = e.getBoundingClientRect();
       const pl = parseFloat(s.paddingLeft) + e.clientLeft, pt = parseFloat(s.paddingTop) + e.clientTop;
       const pr = parseFloat(s.paddingRight) + (b.width - e.clientWidth - e.clientLeft), pb = parseFloat(s.paddingBottom) + (b.height - e.clientHeight - e.clientTop);
-      rects = [{ left: b.left + pl, top: b.top + pt, width: Math.max(0, b.width - pl - pr), height: Math.max(0, b.height - pt - pb) }];
+      const content = { left: b.left + pl, top: b.top + pt, width: Math.max(0, b.width - pl - pr), height: Math.max(0, b.height - pt - pb) };
+      // Single-line fields: narrow the text box to the measured width of the text, so the rest of
+      // the field's fill can be sampled. Textareas and selects keep the whole content box.
+      if (e.tagName === 'INPUT') {
+        const shown = (e.type === 'password' && !usePlaceholder) ? '\u2022'.repeat(text.length) : text;
+        const w = Math.min(content.width, measure(shown, ps ?? s) + 4);
+        const align = s.textAlign, off = /center/.test(align) ? (content.width - w) / 2 : /right|end/.test(align) ? content.width - w : 0;
+        rects = [{ left: content.left + Math.max(0, off - 2), top: content.top, width: w, height: content.height }];
+      } else rects = [content];
     } else {
       text = direct.map(n => n.textContent).join(' ').replace(/\s+/g, ' ').trim();
       color = rgba(s.webkitTextFillColor || s.color);
@@ -102,13 +125,16 @@ export function collectContrast(options = {}) {
     rects = rects.filter(r => r.width > 0.5 && r.height > 0.5);
     if (!rects.length) { skipped.push({ selector: sel, reason: 'no-box' }); continue; }
     if (color[3] < 0.01) { skipped.push({ selector: sel, reason: /text/.test(s.backgroundClip + s.webkitBackgroundClip) ? 'gradient-text' : 'transparent-text' }); continue; }
-    const box = bgBox(e), bb = box.getBoundingClientRect();
+    const box = bgBox(e), bs = getComputedStyle(box);
+    const background = (isControl || visibleBorder(bs)) ? insideBorder(box, bs) : docRect(box.getBoundingClientRect());
     const own = rects.map(docRect), around = { x: Math.min(...own.map(r => r.x)) - 4, y: Math.min(...own.map(r => r.y)) - 4 };
     around.right = Math.max(...own.map(r => r.x + r.width)) + 4; around.bottom = Math.max(...own.map(r => r.y + r.height)) + 4;
     const occupied = (box === e && isControl) ? [] : occupiedIn(box).filter(r => r.x < around.right && r.x + r.width > around.x && r.y < around.bottom && r.y + r.height > around.y && !(isControl && r.x <= own[0].x && r.y <= own[0].y && r.x + r.width >= own[0].x + own[0].width && r.y + r.height >= own[0].y + own[0].height));
     runs.push({
       selector: sel, tag: e.tagName.toLowerCase(), kind: isControl ? 'control' : 'text', text: text.slice(0, 80),
-      rect: docRect(e.getBoundingClientRect()), textRects: own, occupied, backgroundBox: docRect(bb),
+      rect: docRect(e.getBoundingClientRect()), textRects: own, occupied, backgroundBox: background,
+      // Controls are sampled across their whole inner box (minus the text), not just a ring.
+      sampleBox: isControl && box === e ? background : null,
       color, opacity: Math.round(opacity * 1000) / 1000,
       fontSize: parseFloat(s.fontSize), fontWeight: Number(s.fontWeight) || (s.fontWeight === 'bold' ? 700 : 400),
       textShadow: s.textShadow !== 'none' ? s.textShadow : null
