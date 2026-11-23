@@ -160,10 +160,14 @@ test('Girl Math config: deny patterns match the real signed-out labels and leave
     'share both dreams with the community': btn('share both dreams with the community'),
     'upload my photos': btn('upload my photos'),
     'allow (analytics consent)': btn('allow'),
+    // UX-only scope (2026-11-22): anything that sends the story to AI is blocked.
+    'continue': btn('continue'),
+    'send reply': btn('send reply'),
+    'make my plan and dreams': btn('make my plan and dreams'),
   };
   for (const [label, a] of Object.entries(blocked)) assert.equal(checkAction(a, gm).allowed, false, label);
-  // Allowed: the guest onboarding path, Back, edits and declining consent.
-  for (const name of ['tell froggy about my day', 'continue', 'add the money bits myself', 'make my plan and dreams', 'use starter estimates', 'add a money bit', 'remove', 'change my story', 'edit my dreams', 'open dream for travel', 'close dream', 'no thanks', 'show password', 'i’m new here', 'add my own category or dream']) {
+  // Allowed: the guest onboarding path up to the AI step, Back, edits and declining consent.
+  for (const name of ['tell froggy about my day', 'add the money bits myself', 'use starter estimates', 'add a money bit', 'remove', 'change my story', 'edit my dreams', 'open dream for travel', 'close dream', 'no thanks', 'show password', 'i’m new here', 'add my own category or dream']) {
     assert(checkAction(btn(name), gm).allowed, name);
   }
   assert.equal(checkAction(link('Instagram', 'https://instagram.com/girlmath'), gm).rule, 'external-link');
