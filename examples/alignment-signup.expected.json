@@ -1,0 +1,38 @@
+{
+  "fixture": "examples/alignment-signup.html",
+  "rules": "examples/alignment-signup.rules.json",
+  "viewport": { "width": 390, "height": 844 },
+  "columnLeft": 24,
+  "outcomes": {
+    "not-flagged": "No rule verdict against it and no automatic candidate.",
+    "within-tolerance": "A supplied rule measured it as a target and it passed.",
+    "outside-tolerance": "A supplied rule measured it as a target and it failed.",
+    "review-candidate": "The automatic candidate pass flagged it."
+  },
+  "elements": {
+    "#headline":       { "category": "aligned", "expected": "not-flagged", "note": "Column reference for the rules." },
+    "#intro":          { "category": "aligned", "expected": "not-flagged" },
+    "#email-label":    { "category": "aligned", "expected": "not-flagged" },
+    "#password-label": { "category": "aligned", "expected": "not-flagged" },
+    "#password":       { "category": "aligned", "expected": "within-tolerance", "deviation": 0 },
+    "#or":             { "category": "aligned", "expected": "not-flagged", "note": "Full-width box with centered text." },
+    "#continue-apple": { "category": "aligned", "expected": "not-flagged" },
+    "#benefit-1":      { "category": "deliberate-ignored", "expected": "not-flagged", "note": "Bulleted list indented 20px; beyond the 12px near limit." },
+    "#benefit-2":      { "category": "deliberate-ignored", "expected": "not-flagged" },
+    "#benefit-3":      { "category": "deliberate-ignored", "expected": "not-flagged" },
+    "#quote-text":     { "category": "deliberate-ignored", "expected": "not-flagged", "note": "Pull-quote indented 24px inside a figure, which is its own alignment group." },
+    "#quote-caption":  { "category": "deliberate-ignored", "expected": "not-flagged" },
+    "#card-title":     { "category": "deliberate-ignored", "expected": "not-flagged", "note": "Card section with its own padding; its own alignment group." },
+    "#card-body":      { "category": "deliberate-ignored", "expected": "not-flagged" },
+    "#password-hint":  { "category": "deliberate-declared", "expected": "within-tolerance", "deviation": 0, "note": "Indented exactly 8px; rule hint-indented-8px declares offset 8." },
+    "#email":          { "category": "accidental-declared", "expected": "outside-tolerance", "deviation": -4, "note": "Stray margin-left:-4px." },
+    "#create-account": { "category": "accidental-declared", "expected": "outside-tolerance", "deviation": -7, "note": "Stray margin-left:-7px." },
+    "#terms":          { "category": "accidental-undeclared", "expected": "review-candidate", "delta": 5, "clusterValue": 24, "note": "Stray margin-left:5px with no rule." }
+  },
+  "ruleStatuses": {
+    "password-on-column": "within-tolerance",
+    "email-on-column": "outside-tolerance",
+    "create-button-on-column": "outside-tolerance",
+    "hint-indented-8px": "within-tolerance"
+  }
+}

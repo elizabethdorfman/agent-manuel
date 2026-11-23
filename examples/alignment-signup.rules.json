@@ -1,0 +1,8 @@
+{
+  "rules": [
+    { "id": "password-on-column", "selectors": ["#headline", "#password"], "axis": "left", "tolerance": 2 },
+    { "id": "email-on-column", "selectors": ["#headline", "#email"], "axis": "left", "tolerance": 2 },
+    { "id": "create-button-on-column", "selectors": ["#headline", "#create-account"], "axis": "left", "tolerance": 2 },
+    { "id": "hint-indented-8px", "selectors": ["#password", "#password-hint"], "axis": "left", "offset": 8, "tolerance": 2 }
+  ]
+}

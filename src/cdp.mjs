@@ -49,12 +49,15 @@ export class CDP {
   }
   close(){this.socket.close();}
 }
-export async function launchBrowser({chromePath,noSandbox=false}={}) {
+/** Returns the first Chrome or Chromium executable that exists, or undefined. */
+export async function findChrome(chromePath) {
   const candidates=[chromePath,process.env.CHROME_BIN,'/usr/bin/chromium','/usr/bin/chromium-browser','/usr/bin/google-chrome','/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'].filter(Boolean);
-  let binary;
-  for(const file of candidates)try{await access(file);binary=file;break;}catch{}
+  for(const file of candidates)try{await access(file);return file;}catch{}
+}
+export async function launchBrowser({chromePath,noSandbox=false}={}) {
+  const binary=await findChrome(chromePath);
   if(!binary)throw new Error('Chrome was not found. Set CHROME_BIN to its executable path.');
-  const profile=await mkdtemp(join(tmpdir(),'qa-evidence-'));
+  const profile=await mkdtemp(join(tmpdir(),'agent-manuel-'));
   const child=spawn(binary,['--headless=new','--no-first-run','--disable-dev-shm-usage','--remote-debugging-port=0','--remote-debugging-address=127.0.0.1','--user-data-dir='+profile,...(noSandbox?['--no-sandbox']:[]),'about:blank'],{stdio:['ignore','ignore','pipe']});
   const cleanup=async()=>{
     if(child.exitCode===null){child.kill('SIGTERM');await new Promise(resolve=>{const t=setTimeout(()=>{child.kill('SIGKILL');resolve();},3000);child.once('exit',()=>{clearTimeout(t);resolve();});});}

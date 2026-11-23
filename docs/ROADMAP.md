@@ -8,7 +8,7 @@ See [VISION.md](VISION.md) for the target system.
 - [x] Read-only DOM geometry collector covering element boxes and text runs
 - [x] UI06 alignment analysis using explicit rules and observed-edge review candidates
 - [x] HTML and SVG report with switchable layers
-- [x] Unit tests (5 passing)
+- [x] Tests: 11 unit tests and a Chrome integration test that matches `npm run demo:signup` against a labelled fixture of deliberate and accidental offsets
 - [x] `npm run demo` passed against local Chrome on 2026-11-22. The aligned rule was within tolerance with a spread of 0px. The deliberate offset was flagged at 8px.
 - [ ] Exercise the HTML layer toggles by hand
 

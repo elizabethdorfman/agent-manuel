@@ -1,11 +1,11 @@
 {
-  "name": "qa-evidence",
+  "name": "agent-manuel",
   "version": "0.1.0",
-  "description": "Browser geometry and annotated alignment evidence for human and AI reviewers.",
+  "description": "Agent Manuel does your manual testing: explores every screen of your app and checks it with browser measurements and an AI judge.",
   "type": "module",
   "engines": { "node": ">=22" },
-  "bin": { "qa-alignment": "bin/alignment.mjs" },
-  "scripts": { "test": "node --test test/*.test.mjs", "demo": "node bin/alignment.mjs --url ./examples/alignment.html --rules ./examples/rules.json --out ./artifacts/demo" },
+  "bin": { "agent-manuel-alignment": "bin/alignment.mjs" },
+  "scripts": { "test": "node --test test/*.test.mjs", "demo": "node bin/alignment.mjs --url ./examples/alignment.html --rules ./examples/rules.json --out ./artifacts/demo", "demo:signup": "node bin/alignment.mjs --url ./examples/alignment-signup.html --rules ./examples/alignment-signup.rules.json --out ./artifacts/signup" },
   "license": "MIT",
   "exports": { "./collector": "./src/collect.mjs", "./alignment": "./src/analyze.mjs", "./report": "./src/render.mjs" }
 }
