@@ -64,7 +64,7 @@ svg.s{width:100%;height:auto;display:block}
 .swcap b{font:700 10px var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);display:block;margin-bottom:3px}
 .roles{width:100%;border-collapse:collapse;font-size:12.5px}
 .roles td{padding:7px 6px;border-top:1px solid var(--border);vertical-align:top;line-height:1.4}.roles tr:first-child td{border-top:0}
-.roles .who{font-weight:700;white-space:nowrap}.roles .who i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
+.roles .who{font-weight:700;white-space:nowrap}.kind{display:inline-block;font:700 9px var(--mono);padding:1px 5px;border-radius:4px;margin-top:4px;letter-spacing:.04em}.kind.code{border:1px solid var(--border);color:var(--muted)}.kind.ai{background:rgba(192,132,252,.18);color:#c084fc}.roles .key{font-size:11.5px;color:var(--muted);padding-bottom:8px}.later{font-size:11.5px;color:var(--muted);margin-top:3px}.roles .who i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
 .st{font:700 9.5px var(--mono);padding:2px 6px;border-radius:4px;white-space:nowrap}
 .st.now{background:rgba(34,197,94,.16);color:var(--green)}.st.next{background:rgba(79,124,255,.16);color:var(--primary)}.st.later{border:1px solid var(--border);color:var(--muted)}
 .rules{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
@@ -135,19 +135,12 @@ svg.s{width:100%;height:auto;display:block}
 
 <section>
  <h2>How the agent swarm works</h2>
- <p class="lead">Exploring an app is a big map of screens joined by taps. One worker walking it is slow, so a swarm splits the map between many workers who share one notebook: every screen found, every tap tried, who's doing what, and what's wrong on each screen.</p>
+ <p class="lead">Exploring an app is a big map of screens joined by taps. One worker walking it is slow, so a swarm splits the map between many workers who share one notebook: every screen found, every tap tried, who's doing what, and what's wrong on each screen. Most workers are ordinary code driving real Chrome tabs. AI comes in only where judgement is needed.</p>
  <div class="box">
   <div class="sw">
    <div><svg class="s" id="swarm" viewBox="0 0 360 300" role="img" aria-label="Swarm animation"></svg>
     <div class="swcap" id="swcap"><b>Step 1</b>&nbsp;</div></div>
-   <table class="roles">
-    <tr><td class="who"><i style="background:var(--pink)"></i>Explorers</td><td>Claim an untried tap so no one else takes it, try it, and write down where it led.</td><td><span class="st now">one today</span></td></tr>
-    <tr><td class="who"><i style="background:var(--green)"></i>Checkers</td><td>When a new screen appears, run alignment, hierarchy and readability on it, at phone and desktop width.</td><td><span class="st now">built</span></td></tr>
-    <tr><td class="who"><i style="background:var(--amber)"></i>Verifier</td><td>Before a problem counts, reproduce it from a fresh start, so flukes don't count.</td><td><span class="st next">next</span></td></tr>
-    <tr><td class="who"><i style="background:var(--teal)"></i>Tricksters</td><td>Revisit screens with awkward moves: blank input, very long text, double-tap, refresh mid-save.</td><td><span class="st next">next</span></td></tr>
-    <tr><td class="who"><i style="background:#c084fc"></i>AI judge</td><td>Reads each screen's markups and measurements, and says what's confusing or unreadable, citing the numbers.</td><td><span class="st later">soon</span></td></tr>
-    <tr><td class="who"><i style="background:linear-gradient(135deg,#f3a6c8,#b56aa8)"></i>Personas</td><td>Play a real user with one goal and report every surprise and dead end.</td><td><span class="st later">soon</span></td></tr>
-   </table>
+   <table class="roles"><tr><td colspan="3" class="key"><span class="kind code">CODE</span> runs the same way every time &nbsp; <span class="kind ai">AI</span> uses an AI model</td></tr><tr><td class="who"><i style="background:var(--pink)"></i>Explorers<br><span class="kind code">CODE</span></td><td>A Chrome browser tab driven by our code. It takes the next untried tap from the shared map, does it, and writes down where it led.<div class="later">Later, a small AI model could choose which tap to try and what to type.</div></td><td><span class="st now">one today</span></td></tr><tr><td class="who"><i style="background:var(--green)"></i>Checkers<br><span class="kind code">CODE</span></td><td>Code that measures the page in the browser: where every box sits, its size, its colours. No guessing.</td><td><span class="st now">built</span></td></tr><tr><td class="who"><i style="background:#94a3b8"></i>Coordinator<br><span class="kind code">CODE</span></td><td>Code that keeps the shared map, a file of screens and taps. It hands out work and ends the run.</td><td><span class="st now">built</span></td></tr><tr><td class="who"><i style="background:var(--amber)"></i>Verifier<br><span class="kind code">CODE</span></td><td>A fresh Chrome tab that replays the exact steps to a problem, to confirm it’s real.</td><td><span class="st next">next</span></td></tr><tr><td class="who"><i style="background:var(--teal)"></i>Tricksters<br><span class="kind code">CODE</span></td><td>Chrome tabs that try awkward inputs from a list: blank, very long, double-tap, refresh mid-save.</td><td><span class="st next">next</span></td></tr><tr><td class="who"><i style="background:#c084fc"></i>AI judge<br><span class="kind ai">AI</span></td><td>One call to a vision AI model per screen. It gets the screenshot plus the measurements and returns findings that must cite them.</td><td><span class="st later">soon</span></td></tr><tr><td class="who"><i style="background:linear-gradient(135deg,#f3a6c8,#b56aa8)"></i>Personas<br><span class="kind ai">AI</span></td><td>A vision AI model that steers a Chrome tab while playing a real user with one goal.</td><td><span class="st later">soon</span></td></tr></table>
   </div>
  </div>
  <div class="rules">
