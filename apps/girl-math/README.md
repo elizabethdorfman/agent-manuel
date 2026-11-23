@@ -2,7 +2,8 @@
 
 This folder holds Girl Math–specific QA inputs. The core tool in `src/` must not depend on anything here.
 
-- `onboarding-qa-playbook.pdf` is the onboarding QA playbook. It covers the branch map, the check catalog (UI, FL, PA and SV), observed failures and the bug report format. The source references are pinned to girl-math commit `3287fadfd7b0709fd99671ee6c3f4b2a06e4cdd2`.
+- `config.json` holds the guest-only, prod-safe exploration settings for coolgirlmath.com.
+- The onboarding QA playbook (branch map, check catalog, observed failures, bug report format) is kept privately, because it references Girl Math's private source.
 
 Planned additions:
 

@@ -2,7 +2,7 @@
 
 The target system explores every distinct, reachable branch of an app journey on a preview build. It verifies each state it reaches against a check catalog and reports coverage and bugs with enough evidence for a coding agent to reproduce and fix them.
 
-The source of this vision is the Girl Math Onboarding QA Playbook ([`apps/girl-math/onboarding-qa-playbook.pdf`](../apps/girl-math/onboarding-qa-playbook.pdf)). The core tool stays app-agnostic. Girl Math is the first app it is configured for.
+The source of this vision is an internal QA playbook written for Girl Math's onboarding. The playbook itself isn't published, because it references private source code. The core tool stays app-agnostic. Girl Math is the first app it is configured for.
 
 ## The loop
 

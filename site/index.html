@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agent Manuel does your manual testing</title>
+<style>
+:root{--bg:#0b0b0d;--fg:#f4f4f5;--muted:#a1a1aa;--card:#141417;--border:#2a2a30;--primary:#4f7cff;--primary-fg:#fff;--code:#1c1c21;--red:#ff4d6a;--green:#22c55e;--teal:#2dd4bf;--pink:#f472b6;--amber:#f5b041;--radius:10px;--sans:ui-sans-serif,-apple-system,"Inter",system-ui,sans-serif;--mono:ui-monospace,"SF Mono",Menlo,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+main{max-width:760px;margin:0 auto;padding:28px 16px 40px}
+h1{font-size:38px;line-height:1.08;margin:0 0 12px;letter-spacing:-.02em}h1 em{font-style:normal;color:var(--primary)}
+h2{font-size:23px;margin:0 0 6px;letter-spacing:-.01em}
+.lead{color:var(--muted);font-size:14.5px;line-height:1.5;margin:0 0 14px}
+section{margin-bottom:40px}
+.box{border:1px solid var(--border);border-radius:calc(var(--radius) + 4px);background:var(--card);padding:14px}
+.hero{text-align:center;padding:10px 0 4px}
+.hero p{color:var(--muted);font-size:15px;line-height:1.5;margin:0 auto 16px;max-width:500px}
+.url{display:flex;gap:8px;max-width:500px;margin:0 auto}
+.url input{flex:1;font:14px var(--mono);padding:11px 14px;border-radius:var(--radius);border:1px solid var(--border);background:var(--card);color:var(--fg)}
+.url button{font:600 14px var(--sans);padding:0 18px;border-radius:var(--radius);border:0;background:var(--primary);color:var(--primary-fg);cursor:pointer}
+.soon{display:inline-block;font:700 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid var(--primary);color:var(--primary);margin-bottom:8px}
+/* ---- hero stage ---- */
+.stage{position:relative;height:520px;overflow:hidden;padding:0}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%}
+.counter{position:absolute;left:22px;top:20px;z-index:2;width:220px}
+.counter .n{font:800 46px/1 var(--mono);letter-spacing:-.03em}.counter .l{font-size:12.5px;color:var(--muted);margin-top:4px}
+.mini{display:flex;gap:22px;margin-top:16px;font:11.5px var(--mono);color:var(--muted)}.mini b{display:block;font-size:18px;color:var(--fg)}
+.ticker{position:absolute;left:22px;bottom:18px;z-index:2;font:11.5px/1.7 var(--mono);color:var(--muted);height:96px;width:220px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.ticker span{animation:in .6s}
+.phone{position:absolute;left:262px;top:42px;width:200px;height:433px;border-radius:22px;overflow:hidden;border:6px solid #000;box-shadow:0 20px 50px rgba(0,0,0,.45);z-index:2;background:#000}
+.phone img{position:absolute;inset:0;width:100%;opacity:0;transition:opacity .9s}.phone img.on{opacity:1}
+.hl{position:absolute;border:2.5px solid var(--red);border-radius:6px;background:rgba(255,77,106,.12);opacity:0;transform:scale(1.08);transition:.6s}.hl.on{opacity:1;transform:none}
+.call{position:absolute;left:490px;right:20px;top:110px;z-index:2;opacity:0;transform:translateY(6px);transition:.7s}.call.on{opacity:1;transform:none}
+.call .scr{font:600 11px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.iss{margin-bottom:12px}.iss .tag{display:inline-block;font:700 9.5px var(--mono);padding:2px 6px;border-radius:4px;margin-bottom:4px;background:rgba(255,77,106,.16);color:var(--red)}
+.iss .msg{font-size:14px;line-height:1.35;font-weight:600}.iss .why{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+.dots{position:absolute;right:22px;bottom:22px;z-index:2;display:flex;gap:6px}.dots i{width:7px;height:7px;border-radius:50%;background:var(--border);cursor:pointer}.dots i.on{background:var(--primary)}
+@keyframes in{from{opacity:0;transform:translateY(4px)}}
+/* ---- checks ---- */
+.checks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ck{border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-size:12.5px;line-height:1.5;background:var(--card)}
+.ck b{display:block;font-size:15px;margin-bottom:4px}.ck ul{margin:6px 0 0;padding-left:16px;color:var(--muted)}
+/* ---- branching ---- */
+.cap{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;min-height:38px}
+.cap .run{font:600 12.5px var(--mono)}.cap .run small{display:block;font:11.5px var(--sans);color:var(--muted);margin-top:2px}
+.tally{display:flex;gap:16px;font:11.5px var(--mono);color:var(--muted);flex:none}.tally b{color:var(--fg);font-size:15px;margin-right:3px}
+svg.t{width:100%;height:auto;display:block}
+.t .e{fill:none;stroke:var(--primary);stroke-width:2.2;opacity:0;transition:opacity .6s,stroke .6s}.t .e.on{opacity:.7}.t .e.hot{opacity:1;stroke-width:3.2}
+.t .el{font:10.5px var(--sans);fill:var(--muted);opacity:0;transition:opacity .6s}.t .el.on{opacity:1}
+.t .nd{opacity:.12;transition:opacity .8s}.t .nd.on{opacity:1}
+.t .fr{fill:none;stroke:var(--border);stroke-width:1.5}.t .nd.cur .fr{stroke:var(--primary);stroke-width:3}
+.t .nl{font:600 11px var(--sans);fill:var(--fg);text-anchor:middle}
+.t .tag{font:600 9.5px var(--mono);fill:var(--green);opacity:0;transition:opacity .5s}.t .tag.on{opacity:1}
+.t .mover{transition:transform .9s cubic-bezier(.5,0,.3,1)}
+/* ---- swarm ---- */
+.sw{display:grid;grid-template-columns:1.1fr 1fr;gap:14px;align-items:start}
+svg.s{width:100%;height:auto;display:block}
+.s .ln{stroke:var(--border);stroke-width:1.6;fill:none}.s .ln.claim{stroke-dasharray:5 4}.s .ln.done{stroke:var(--primary);opacity:.7}
+.s .node{fill:var(--card);stroke:var(--border);stroke-width:1.6;transition:all .6s}.s .node.found{stroke:var(--primary);fill:rgba(79,124,255,.15)}.s .node.checked{stroke:var(--green);fill:rgba(34,197,94,.15)}
+.s .nt{font:600 10.5px var(--sans);fill:var(--fg);text-anchor:middle}.s .nt.dim{fill:var(--muted);font-weight:400}
+.s .w{transition:transform 1s cubic-bezier(.5,0,.3,1)}.s .wl{font:700 9px var(--mono);text-anchor:middle;fill:var(--bg)}
+.s .flag{font:600 9px var(--mono);opacity:0;transition:opacity .5s}.s .flag.on{opacity:1}
+.s .ckpt{opacity:0;transition:opacity .6s}.s .ckpt.on{opacity:1}
+.swcap{font-size:13px;line-height:1.45;min-height:56px;margin-top:10px;border-top:1px dashed var(--border);padding-top:10px}
+.swcap b{font:700 10px var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);display:block;margin-bottom:3px}
+.roles{width:100%;border-collapse:collapse;font-size:12.5px}
+.roles td{padding:7px 6px;border-top:1px solid var(--border);vertical-align:top;line-height:1.4}.roles tr:first-child td{border-top:0}
+.roles .who{font-weight:700;white-space:nowrap}.roles .who i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
+.st{font:700 9.5px var(--mono);padding:2px 6px;border-radius:4px;white-space:nowrap}
+.st.now{background:rgba(34,197,94,.16);color:var(--green)}.st.next{background:rgba(79,124,255,.16);color:var(--primary)}.st.later{border:1px solid var(--border);color:var(--muted)}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.rule{border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;font-size:12.5px;line-height:1.45;background:var(--card)}.rule b{display:block;font-size:13.5px;margin-bottom:2px}
+/* ---- persona ---- */
+.pj{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start}
+.persona{display:flex;gap:10px;align-items:center;border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;margin-bottom:12px}
+.av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#f3a6c8,#b56aa8);display:grid;place-items:center;font:700 15px var(--sans);color:#fff;flex:none}
+.persona b{font-size:14px}.persona small{display:block;color:var(--muted);font-size:12px;line-height:1.4}
+.pphone{position:relative;width:200px;height:433px;border-radius:22px;overflow:hidden;border:6px solid #000;background:#000}
+.pphone img{position:absolute;inset:0;width:100%;opacity:0;transition:opacity .9s}.pphone img.on{opacity:1}
+.tap{position:absolute;width:26px;height:26px;border-radius:50%;border:2.5px solid #fff;background:rgba(255,255,255,.25);box-shadow:0 0 0 4px rgba(0,0,0,.25);opacity:0;transition:all .8s}.tap.on{opacity:1}
+.hl2{position:absolute;border:2.5px solid var(--red);border-radius:6px;background:rgba(255,77,106,.12);opacity:0;transition:.6s}.hl2.on{opacity:1}
+.steps{display:flex;flex-direction:column;gap:9px}
+.step{border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;font-size:12.5px;line-height:1.45;opacity:.25;transition:opacity .7s,border-color .7s}
+.step.on{opacity:1}.step.cur{border-color:var(--primary)}
+.step .h{font:700 10px var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:3px}.step .q{font-style:italic}
+.res{display:inline-block;font:700 10px var(--mono);padding:2px 6px;border-radius:4px;margin-top:5px;background:rgba(255,77,106,.16);color:var(--red)}
+.sum{display:flex;gap:14px;margin-top:4px;font:12px var(--mono);color:var(--muted)}.sum b{color:var(--fg);font-size:16px;margin-right:3px}
+.note{font:11px var(--mono);color:var(--muted);margin-top:10px}
+/* ---- chatgpt ---- */
+.cg{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:center}
+.cg img{width:220px;border-radius:14px;border:1px solid var(--border)}
+.cg ol{margin:10px 0 0;padding-left:18px;font-size:13.5px;line-height:1.6}
+.cta{text-align:center;padding:22px}
+.cta code{display:inline-block;font:13px var(--mono);background:var(--code);padding:8px 14px;border-radius:var(--radius);margin:6px 0 0}
+.draft{font:11px var(--mono);color:var(--muted);text-align:center;margin-top:14px}
+@media (max-width:720px){.checks,.rules{grid-template-columns:1fr}.sw,.pj,.cg{grid-template-columns:1fr}.stage{height:auto;min-height:900px}.phone{left:50%;margin-left:-100px;top:200px}.call{left:20px;top:660px}.ticker{display:none}}
+</style></head>
+<body><main>
+
+<section class="hero">
+ <h1>Agent Manuel does your<br><em>manual testing.</em></h1>
+ <p>Paste your URL. Agents tap every button, try every path and check every screen, then show you exactly what's broken.</p>
+ <div class="url"><input value="https://www.coolgirlmath.com" aria-label="Your app's URL"><button type="button">Send Manuel →</button></div>
+</section>
+
+<section>
+<div class="box stage" id="stage"><canvas id="cv"></canvas>
+ <div class="counter"><div class="n" id="n">0</div><div class="l">states and paths tried</div>
+  <div class="mini"><span><b id="s">0</b>screens checked</span><span><b id="b">0</b>issues found</span></div></div>
+ <div class="phone"><img src="assets/intro.jpg" alt="Girl Math intro film"><img src="assets/journal.jpg" alt="Girl Math journal"><img src="assets/consent.jpg" alt="Girl Math AI consent"><img src="assets/signin.jpg" alt="Girl Math log in"><div class="hl" id="hl"></div></div>
+ <div class="call" id="call"><div class="scr" id="cs"></div><div id="cl"></div></div>
+ <div class="ticker" id="tk"></div>
+ <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
+</div>
+</section>
+
+<section>
+ <h2>Three checks on every screen</h2>
+ <p class="lead">The computer measures the real page. Then each screen is judged on its own.</p>
+ <div class="checks">
+  <div class="ck"><b>Visual hierarchy</b>Every screen should have one main thing. Manuel works out what that is, then checks the design makes it win.<ul><li>Is the main action the strongest thing?</li><li>Is it flat, with everything the same weight?</li><li>Is too much going on?</li></ul></div>
+  <div class="ck"><b>Readability</b>Can a person actually read every word?<ul><li>Text too faint for its background</li><li>Text cut off or clipped</li><li>Text running off the screen</li><li>Text covered by something else</li></ul></div>
+  <div class="ck"><b>Alignment</b>Things that should line up, line up.<ul><li>Edges a few pixels off the column</li><li>Leaves deliberate indents alone</li></ul></div>
+ </div>
+</section>
+
+<section>
+ <h2>How Manuel explores</h2>
+ <p class="lead">Every branch starts fresh. Manuel replays the shortest way back to a screen, then tries one thing it hasn't tried yet. A new screen gets checked. A screen it's seen before is just noted.</p>
+ <div class="box">
+  <div class="cap"><div class="run" id="run">Starting<small id="runs">&nbsp;</small></div>
+   <div class="tally"><span><b id="tb">0</b>branches tried</span><span><b id="ts">0</b>screens found</span></div></div>
+  <svg class="t" id="tree" viewBox="0 0 700 330" role="img" aria-label="Branching animation"></svg>
+ </div>
+</section>
+
+<section>
+ <h2>How the agent swarm works</h2>
+ <p class="lead">Exploring an app is a big map of screens joined by taps. One worker walking it is slow, so a swarm splits the map between many workers who share one notebook: every screen found, every tap tried, who's doing what, and what's wrong on each screen.</p>
+ <div class="box">
+  <div class="sw">
+   <div><svg class="s" id="swarm" viewBox="0 0 360 300" role="img" aria-label="Swarm animation"></svg>
+    <div class="swcap" id="swcap"><b>Step 1</b>&nbsp;</div></div>
+   <table class="roles">
+    <tr><td class="who"><i style="background:var(--pink)"></i>Explorers</td><td>Claim an untried tap so no one else takes it, try it, and write down where it led.</td><td><span class="st now">one today</span></td></tr>
+    <tr><td class="who"><i style="background:var(--green)"></i>Checkers</td><td>When a new screen appears, run alignment, hierarchy and readability on it, at phone and desktop width.</td><td><span class="st now">built</span></td></tr>
+    <tr><td class="who"><i style="background:var(--amber)"></i>Verifier</td><td>Before a problem counts, reproduce it from a fresh start, so flukes don't count.</td><td><span class="st next">next</span></td></tr>
+    <tr><td class="who"><i style="background:var(--teal)"></i>Tricksters</td><td>Revisit screens with awkward moves: blank input, very long text, double-tap, refresh mid-save.</td><td><span class="st next">next</span></td></tr>
+    <tr><td class="who"><i style="background:#c084fc"></i>AI judge</td><td>Reads each screen's markups and measurements, and says what's confusing or unreadable, citing the numbers.</td><td><span class="st later">soon</span></td></tr>
+    <tr><td class="who"><i style="background:linear-gradient(135deg,#f3a6c8,#b56aa8)"></i>Personas</td><td>Play a real user with one goal and report every surprise and dead end.</td><td><span class="st later">soon</span></td></tr>
+   </table>
+  </div>
+ </div>
+ <div class="rules">
+  <div class="rule"><b>Claims</b>Workers mark a tap as theirs before trying it, so no work is ever done twice.</div>
+  <div class="rule"><b>Checkpoints</b>Reach a hard-to-get-to screen once, save it, and let others start from there instead of replaying from the start.</div>
+  <div class="rule"><b>Seen before? Just noted.</b>A tap that leads to a known screen is recorded as a path. The screen isn't checked again.</div>
+  <div class="rule"><b>A coordinator ends the run</b>It stops when nothing untried is left or time is up, and keeps everyone inside the rules for your live site.</div>
+ </div>
+</section>
+
+<section>
+ <span class="soon">Coming soon</span>
+ <h2>Persona journeys</h2>
+ <p class="lead">An AI plays a real kind of user with one goal. On every screen it says what it expects to happen, then checks whether the app did that. Every surprise is a sign the design is confusing.</p>
+ <div class="box">
+  <div class="pj">
+   <div class="pphone" id="pp"><img src="assets/journal.jpg" alt=""><img src="assets/consent.jpg" alt=""><div class="tap" id="tap"></div><div class="hl2" id="hl2"></div></div>
+   <div>
+    <div class="persona"><div class="av">M</div><div><b>Maya</b><small>First time · on her phone · skims<br>Goal: log today's coffee and see where her money went</small></div></div>
+    <div class="steps" id="steps">
+     <div class="step"><div class="h">Journal · the one thing here</div>"Tell it about my day." <span class="q">I'll type my coffee and tap the big button.</span></div>
+     <div class="step"><div class="h">Expects</div><span class="q">"Review my amounts" will show me my $6 coffee.</span></div>
+     <div class="step"><div class="h">AI consent · what actually happened</div>A form asking for my age, my country and an agreement. <span class="q">Wait, why does it need where I live?</span><br><span class="res">SURPRISE: expected her amounts, got a 4-question form</span></div>
+     <div class="step"><div class="h">Tries to say no</div><span class="q">I'll skip the AI part.</span> "Don't send my story" is under the analytics card.<br><span class="res">STUCK: can't find a way out</span></div>
+     <div class="step"><div class="h">Journey result</div><div class="sum"><span><b>✗</b>goal not reached</span><span><b>2</b>surprises</span><span><b>1</b>dead end</span></div></div>
+    </div>
+   </div>
+  </div>
+  <div class="note">Illustration of a feature in development, using real Girl Math screens.</div>
+ </div>
+</section>
+
+<section class="cg"><img src="assets/chatgpt-bugs.jpg" alt="Recreated ChatGPT iOS screen with three visual bugs marked">
+ <div><h2>Even ChatGPT ships these.</h2><p class="lead">Recreated from a real screenshot of the ChatGPT iOS app.</p>
+ <ol><li>An old message bubble sits on top of the header buttons</li><li>The photo picker opens over the chat and cuts the toolbar in half</li><li>"Add 1 photo" is almost invisible: about 1.1:1 contrast</li></ol></div></section>
+
+<div class="box cta"><h2>Stop clicking through your own app.</h2><code>npx agent-manuel run https://your.app</code></div>
+<div class="draft">DRAFT · screenshots are real · issues marked ✓ are real tool findings, the rest are analysis until the new checks run · counter numbers are placeholders</div>
+</main>
+
+<script>
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+/* ---------- hero stage ---------- */
+(()=>{
+const S=[
+ {scr:'Intro film',box:[9,267,183,118],iss:[['Readability ✓','The analytics prompt is covered by the intro film.','Its "allow" and "no thanks" buttons are under the video, so no one can read or tap them.'],['Hierarchy','There’s no clear main thing.','"Log in" and "Skip" are equally strong, and the screen has no title.']]},
+ {scr:'Journal',box:[8,264,184,103],iss:[['Readability','The analytics card floats over the bottom of the screen.','It sits on top of the page, right under "Leave the journal", and pulls attention away from the journal itself.']]},
+ {scr:'AI consent',box:[8,258,184,56],iss:[['Hierarchy','This screen asks for 4 things, not 1.','The main decision, letting AI read your journal, is buried under age, country and a separate checkbox. Its button looks switched off until all three are done.'],['Readability ✓','"Don’t send my story" is covered.','The analytics card sits on top of it, and it’s the heaviest thing on the screen.']]},
+ {scr:'Log in',box:[11,264,118,52],iss:[['Readability ✓','Two links are hidden under the analytics card.','"start with my story" and "i forgot my password" can’t be read or tapped until the card is answered.']]}];
+const T=['tapping Skip','trying browser Back','reloading the journal','typing a test story','tapping Review my amounts','reading every word','finding the main thing','checking edges line up','trying Back again','checking the next screen'];
+const imgs=[...document.querySelectorAll('.phone img')],hl=document.getElementById('hl'),call=document.getElementById('call'),dots=[...document.querySelectorAll('#dots i')];
+let k=-1,timer;function go(j){k=j;const s=S[k];imgs.forEach((im,i)=>im.classList.toggle('on',i===k));dots.forEach((d,i)=>d.classList.toggle('on',i===k));
+ hl.classList.remove('on');call.classList.remove('on');
+ setTimeout(()=>{const[x,y,w,h]=s.box;Object.assign(hl.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});hl.classList.add('on');
+  document.getElementById('cs').textContent='Screen: '+s.scr;
+  document.getElementById('cl').innerHTML=s.iss.map(([t,m,w])=>`<div class="iss"><span class="tag">${t}</span><div class="msg">${m}</div><div class="why">${w}</div></div>`).join('');call.classList.add('on')},1000);
+ clearTimeout(timer);timer=setTimeout(()=>go((k+1)%S.length),9000)}
+dots.forEach((d,i)=>d.onclick=()=>go(i));go(0);
+const tk=document.getElementById('tk');let ti=0;setInterval(()=>{const d=document.createElement('span');d.textContent='› '+T[ti++%T.length];tk.appendChild(d);while(tk.children.length>5)tk.firstChild.remove()},1800);
+const cv=document.getElementById('cv'),st=document.getElementById('stage'),c=cv.getContext('2d');const dpr=2;cv.width=st.clientWidth*dpr;cv.height=st.clientHeight*dpr;c.scale(dpr,dpr);
+const W=st.clientWidth,H=st.clientHeight,P=[];const TARGET=2847,DUR=6000;const t0=performance.now();
+function frame(now){const p=Math.min(1,(now-t0)/DUR);const e=1-Math.pow(1-p,3);const n=Math.round(TARGET*e);
+ document.getElementById('n').textContent=n.toLocaleString();document.getElementById('s').textContent=Math.round(41*e);document.getElementById('b').textContent=Math.round(23*e);
+ while(P.length<n/6){const par=P.length?P[Math.floor(Math.random()*P.length)]:{x:W*.42,y:H*.5};const a=Math.random()*6.28,r=8+Math.random()*26;P.push({x:Math.max(6,Math.min(W-6,par.x+Math.cos(a)*r)),y:Math.max(6,Math.min(H-6,par.y+Math.sin(a)*r)),px:par.x,py:par.y,b:now})}
+ c.clearRect(0,0,W,H);c.lineWidth=.6;for(const q of P){const age=Math.min(1,(now-q.b)/900);c.strokeStyle=`rgba(120,140,255,${.13*age})`;c.beginPath();c.moveTo(q.px,q.py);c.lineTo(q.x,q.y);c.stroke();c.fillStyle=`rgba(120,150,255,${.55*age})`;c.beginPath();c.arc(q.x,q.y,1.6,0,6.28);c.fill()}
+ if(p<1||now-t0<DUR+1000)requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+})();
+/* ---------- branching ---------- */
+(()=>{
+const N={intro:[70,165,'Intro','assets/intro.jpg'],journal:[300,165,'Journal','assets/journal.jpg'],consent:[560,165,'AI consent','assets/consent.jpg']};
+const NW=48,NH=104;
+const E=[['e-reload-i','intro','intro','reload','loopTop'],['e-skip','intro','journal','Skip','line'],['e-voice','journal','journal','use voice','loopTop'],['e-reload-j','journal','journal','reload (draft kept)','loopBottom'],['e-review','journal','consent','type story → Review my amounts','line'],['e-back','consent','journal','browser Back','curveBelow']];
+function path(f,t,sh){const A=N[f],B=N[t];
+ if(sh==='loopTop')return `M${A[0]-12},${A[1]-NH/2} C${A[0]-46},${A[1]-NH/2-62} ${A[0]+46},${A[1]-NH/2-62} ${A[0]+12},${A[1]-NH/2}`;
+ if(sh==='loopBottom')return `M${A[0]-12},${A[1]+NH/2} C${A[0]-46},${A[1]+NH/2+62} ${A[0]+46},${A[1]+NH/2+62} ${A[0]+12},${A[1]+NH/2}`;
+ if(sh==='curveBelow')return `M${A[0]-NW/2},${A[1]+30} C${A[0]-80},${A[1]+130} ${B[0]+80},${B[1]+130} ${B[0]+NW/2},${B[1]+30}`;
+ return `M${A[0]+NW/2},${A[1]} L${B[0]-NW/2},${B[1]}`}
+function lpos(f,t,sh){const A=N[f],B=N[t];if(sh==='loopTop')return[A[0],A[1]-NH/2-52];if(sh==='loopBottom')return[A[0],A[1]+NH/2+60];if(sh==='curveBelow')return[(A[0]+B[0])/2,A[1]+112];return[(A[0]+B[0])/2,A[1]-10]}
+let s='';for(const[id,f,t,l,sh] of E){const[lx,ly]=lpos(f,t,sh);s+=`<path class="e" id="${id}" d="${path(f,t,sh)}"/><text class="el" id="${id}-l" x="${lx}" y="${ly}" text-anchor="middle">${l}</text>`}
+for(const k in N){const[x,y,l,src]=N[k];s+=`<g class="nd" id="n-${k}"><image href="${src}" x="${x-NW/2}" y="${y-NH/2}" width="${NW}" height="${NH}" preserveAspectRatio="xMidYMin slice"/><rect class="fr" rx="6" x="${x-NW/2}" y="${y-NH/2}" width="${NW}" height="${NH}"/><text class="nl" x="${x}" y="${y+NH/2+15}">${l}</text><text class="tag" id="tag-${k}" x="${x+NW/2+6}" y="${y-NH/2+10}">new · checked</text></g>`}
+s+=`<g class="mover" id="bdot" style="transform:translate(${N.intro[0]}px,${N.intro[1]}px)"><circle r="7" fill="var(--primary)" stroke="var(--bg)" stroke-width="2"/></g>`;
+document.getElementById('tree').innerHTML=s;
+const RUNS=[
+ {replay:[],try:'e-reload-i',to:'intro',note:'Start fresh at the intro, then try: reload',res:'Same screen. Noted.'},
+ {replay:[],try:'e-skip',to:'journal',note:'Start fresh, then try: Skip',res:'New screen: Journal. Checked.'},
+ {replay:['e-skip'],try:'e-voice',to:'journal',note:'Replay Intro → Skip, then try: use voice',res:'Same screen. Noted.'},
+ {replay:['e-skip'],try:'e-reload-j',to:'journal',note:'Replay Intro → Skip, then try: reload',res:'Same screen, and the draft survived. Noted.'},
+ {replay:['e-skip'],try:'e-review',to:'consent',note:'Replay Intro → Skip, type a test story, then try: Review my amounts',res:'New screen: AI consent. Checked.'},
+ {replay:['e-skip','e-review'],try:'e-back',to:'journal',note:'Replay to AI consent, then try: browser Back',res:'Back to the Journal. Noted.'}];
+const seq={'e-skip':'journal','e-review':'consent'};const dot=document.getElementById('bdot');
+let branches=0,screens=new Set();
+const mv=k=>dot.style.transform=`translate(${N[k][0]}px,${N[k][1]}px)`;
+const cur=k=>{document.querySelectorAll('#tree .nd.cur').forEach(n=>n.classList.remove('cur'));document.getElementById('n-'+k).classList.add('cur')};
+const reveal=k=>document.getElementById('n-'+k).classList.add('on');
+const upd=()=>{document.getElementById('tb').textContent=branches;document.getElementById('ts').textContent=screens.size};
+const run=document.getElementById('run'),runs=document.getElementById('runs');
+function reset(){branches=0;screens=new Set();document.querySelectorAll('#tree .e').forEach(e=>e.setAttribute('class','e'));document.querySelectorAll('#tree .el,#tree .tag').forEach(e=>e.classList.remove('on'));document.querySelectorAll('#tree .nd').forEach(n=>n.setAttribute('class','nd'));upd()}
+(async()=>{while(true){reset();reveal('intro');screens.add('intro');upd();document.getElementById('tag-intro').classList.add('on');mv('intro');cur('intro');
+ run.firstChild.textContent='Starting';runs.textContent='Open the app as a brand-new visitor. Intro: new screen, checked.';await wait(3200);
+ for(let i=0;i<RUNS.length;i++){const r=RUNS[i];run.firstChild.textContent='Branch '+(i+1);runs.textContent=r.note;mv('intro');cur('intro');await wait(1300);
+  for(const e of r.replay){const el=document.getElementById(e);el.setAttribute('class','e hot');mv(seq[e]);cur(seq[e]);await wait(1300);el.setAttribute('class','e on')}
+  const t=document.getElementById(r.try);t.setAttribute('class','e hot');document.getElementById(r.try+'-l').classList.add('on');mv(r.to);await wait(1100);
+  t.setAttribute('class','e on');reveal(r.to);cur(r.to);branches++;if(!screens.has(r.to)){screens.add(r.to);document.getElementById('tag-'+r.to).classList.add('on')}
+  upd();runs.textContent=r.note+'  →  '+r.res;await wait(3000)}
+ run.firstChild.textContent='Done';runs.textContent='Every branch on these screens tried. On a real app this keeps going until nothing new is left.';await wait(6000)}})();
+})();
+/* ---------- swarm ---------- */
+(()=>{
+const N={intro:[55,150,'Intro'],journal:[175,150,'Journal'],consent:[285,150,'AI consent']};
+// [from,to,shape]
+const L=[['intro','intro','top'],['intro','journal','line'],['journal','journal','top'],['journal','consent','line'],['consent','journal','below'],['journal','journal','bottom']];
+const LBL=['reload','Skip','use voice','Review','Back','reload'];
+let s='';
+L.forEach(([a,b,sh],i)=>{const A=N[a],B=N[b];let d,lx,ly;
+ if(sh==='top'){d=`M${A[0]-10},${A[1]-24} C${A[0]-42},${A[1]-86} ${A[0]+42},${A[1]-86} ${A[0]+10},${A[1]-24}`;lx=A[0];ly=A[1]-74}
+ else if(sh==='bottom'){d=`M${A[0]-10},${A[1]+24} C${A[0]-42},${A[1]+86} ${A[0]+42},${A[1]+86} ${A[0]+10},${A[1]+24}`;lx=A[0];ly=A[1]+92}
+ else if(sh==='below'){d=`M${A[0]-14},${A[1]+20} C${A[0]-30},${A[1]+70} ${B[0]+30},${B[1]+70} ${B[0]+14},${B[1]+20}`;lx=(A[0]+B[0])/2+18;ly=A[1]+66}
+ else{d=`M${A[0]+24},${A[1]} L${B[0]-24},${B[1]}`;lx=(A[0]+B[0])/2;ly=A[1]-8}
+ s+=`<path class="ln" id="sl${i}" d="${d}"/><text id="slt${i}" x="${lx}" y="${ly}" text-anchor="middle" font-size="9.5" fill="var(--muted)" opacity="0" style="transition:opacity .5s">${LBL[i]}</text>`});
+for(const k in N){const[x,y,l]=N[k];s+=`<circle class="node" id="sn-${k}" cx="${x}" cy="${y}" r="22"/><text class="nt" x="${x}" y="${y+40}">${l}</text>`}
+s+=`<g class="ckpt" id="ckpt"><circle cx="${N.consent[0]+20}" cy="${N.consent[1]-22}" r="9" fill="var(--amber)"/><text x="${N.consent[0]+20}" y="${N.consent[1]-18}" text-anchor="middle" font-size="11" font-weight="800" fill="#000">★</text><text x="${N.consent[0]}" y="${N.consent[1]-40}" text-anchor="middle" font-size="9" font-family="var(--mono)" fill="var(--amber)">checkpoint saved</text></g>`;
+const WK=[['wA','var(--pink)','A'],['wB','var(--teal)','B'],['wC','var(--green)','✓']];
+for(const[id,col,lab] of WK)s+=`<g class="w" id="${id}"><circle r="9" fill="${col}" stroke="var(--bg)" stroke-width="2"/><text class="wl" y="3.5">${lab}</text></g>`;
+document.getElementById('swarm').setAttribute('viewBox','0 0 340 290');
+document.getElementById('swarm').innerHTML=s;
+const at=(id,k,dx=0,dy=0)=>{document.getElementById(id).style.transform=`translate(${N[k][0]+dx}px,${N[k][1]+dy}px)`};
+const line=(i,cls)=>{document.getElementById('sl'+i).setAttribute('class','ln '+cls);document.getElementById('slt'+i).setAttribute('opacity',cls?1:0)};
+const node=(k,cls)=>document.getElementById('sn-'+k).setAttribute('class','node '+cls);
+const B='<b style="display:inline;color:var(--fg);font:inherit;text-transform:none;letter-spacing:0">';
+const cap=(n,t)=>document.getElementById('swcap').innerHTML=`<b>Step ${n}</b>${t}`;
+function reset(){for(let i=0;i<L.length;i++)line(i,'');for(const k in N)node(k,'');document.getElementById('ckpt').classList.remove('on');at('wA','intro',-10,-8);at('wB','intro',10,-8);at('wC','intro',0,10)}
+(async()=>{while(true){reset();node('intro','checked');
+ cap(1,`Two explorers, A and B, start at the intro. Each ${B}claims</b> a different tap so they never repeat each other: A takes "Skip", B takes "reload".`);
+ line(1,'claim');line(0,'claim');await wait(4500);
+ cap(2,'A finds a new screen, the Journal. B’s reload just comes back to the intro, so that’s noted and B moves on.');
+ at('wA','journal',-10,-8);node('journal','found');line(1,'done');line(0,'done');await wait(4200);
+ cap(3,'The checker (✓) runs alignment, hierarchy and readability on the new Journal screen. A and B claim the next untried taps there: "Review my amounts" and "use voice".');
+ at('wC','journal',0,10);node('journal','checked');at('wB','journal',10,-8);line(3,'claim');line(2,'claim');await wait(4800);
+ cap(4,`A reaches AI consent, a new screen, and saves a ${B}checkpoint</b> there, so nobody has to retype the story to get back. B’s "use voice" stays on the Journal, so it’s noted.`);
+ at('wA','consent',-10,-8);node('consent','found');line(3,'done');line(2,'done');document.getElementById('ckpt').classList.add('on');await wait(4800);
+ cap(5,'The checker moves on to AI consent. B jumps straight to A’s checkpoint and tries "Back". A tries "reload" on the Journal. Each screen keeps its own findings.');
+ at('wC','consent',0,10);node('consent','checked');at('wB','consent',10,-8);await wait(1400);at('wB','journal',10,-8);line(4,'done');at('wA','journal',-10,-8);line(5,'done');await wait(4200);
+ cap(6,'No untried taps are left here, so the coordinator ends the run and writes one report: each screen, its findings, and the steps to get back to it.');
+ await wait(6000)}})();
+})();
+/* ---------- persona ---------- */
+(()=>{
+const steps=[...document.querySelectorAll('#steps .step')],pimgs=[...document.querySelectorAll('#pp img')],tap=document.getElementById('tap'),hl2=document.getElementById('hl2');
+const P=[{img:0,tap:null,hl:null},{img:0,tap:[100,207],hl:null},{img:1,tap:null,hl:[6,40,188,206]},{img:1,tap:null,hl:[6,258,188,30]},{img:1,tap:null,hl:null}];
+(async()=>{while(true){for(let i=0;i<P.length;i++){const p=P[i];steps.forEach((s,j)=>{s.classList.toggle('on',j<=i);s.classList.toggle('cur',j===i)});
+  pimgs.forEach((im,j)=>im.classList.toggle('on',j===p.img));
+  if(p.tap){tap.style.left=(p.tap[0]-13)+'px';tap.style.top=(p.tap[1]-13)+'px';tap.classList.add('on')}else tap.classList.remove('on');
+  if(p.hl){Object.assign(hl2.style,{left:p.hl[0]+'px',top:p.hl[1]+'px',width:p.hl[2]+'px',height:p.hl[3]+'px'});hl2.classList.add('on')}else hl2.classList.remove('on');
+  await wait(i===P.length-1?7000:4500)}
+ steps.forEach(s=>s.classList.remove('on','cur'));await wait(800)}})();
+})();
+</script>
+</body></html>
