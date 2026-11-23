@@ -51,7 +51,13 @@ export function analyze(collected, ctx) {
 
 // Optional: the browser actions the check needs before collect, for example a 200% text scale.
 // Return a list of { method, params } CDP calls. The runner applies them, collects, then undoes them.
+// The runner MUST restore the viewport and emulation afterwards: re-apply the state's base viewport,
+// because variants carry no undo of their own.
 export const variants = [];
+
+// The runner passes the check's app config to BOTH collect(options) (as options.config) and analyze (as ctx.config).
+// Alignment needs its rule selectors inside the page, and hierarchy needs titleSelector.
+// See src/checks/_lib/c-browser.mjs for a reference harness that does all of this.
 ```
 
 Every check must have the following:
