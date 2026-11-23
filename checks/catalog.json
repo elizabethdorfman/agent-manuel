@@ -1,0 +1,389 @@
+{
+  "source": "Girl Math Onboarding QA Playbook, version 4. Titles are short identifiers; procedures remain in the playbook.",
+  "checks": [
+    {
+      "id": "UI01",
+      "title": "Content reflows.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UI02",
+      "title": "Text can resize.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UI03",
+      "title": "Text contrast is measured.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UI04",
+      "title": "Controls can be tapped.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UI05",
+      "title": "The primary action is usable.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UI06",
+      "title": "Required edges line up.",
+      "implementation": "evidence-available",
+      "tool": "alignment"
+    },
+    {
+      "id": "UI07",
+      "title": "Focus stays visible.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UI08",
+      "title": "The design stays consistent.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "FL01",
+      "title": "The journal is reachable.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "FL02",
+      "title": "Consent receives keyboard focus.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "FL03",
+      "title": "Back returns to editing.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "FL04",
+      "title": "The draft survives interruption.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "FL05",
+      "title": "Exit and resume are clear.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "FL06",
+      "title": "Validation gives a recovery path.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "FL07",
+      "title": "Async states are distinct.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "FL08",
+      "title": "Failure can be retried.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "PA01",
+      "title": "A fresh guest has a real choice.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "PA02",
+      "title": "Review starts only with valid permission.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "PA03",
+      "title": "Existing choices remain correct.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "PA04",
+      "title": "Permission errors are recoverable.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "PA05",
+      "title": "Login and account creation are usable.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "PA06",
+      "title": "A user can return after signing out.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "PA07",
+      "title": "The flow communicates privacy.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "PA08",
+      "title": "The intro respects visitor preferences.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "SV01",
+      "title": "Extracted amounts match the fixture.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "SV02",
+      "title": "Corrections propagate once.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "SV03",
+      "title": "Private save and public post are distinct.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "SV04",
+      "title": "Publishing failures do not duplicate posts.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "SV05",
+      "title": "Optional dream setup has an exit.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "SV06",
+      "title": "A saved dream can be reopened.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "SV07",
+      "title": "The outcome is understandable.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "SV08",
+      "title": "Performance has a baseline.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UX01",
+      "title": "Each page has a distinct purpose.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UX02",
+      "title": "Each step asks only for information it needs.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UX03",
+      "title": "The action hierarchy matches the reference.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UX04",
+      "title": "Labels identify the destination or consequence.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UX05",
+      "title": "Opening an item does not silently edit it.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UX06",
+      "title": "Editing acts on the selected content.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UX07",
+      "title": "Conversational controls retain the promised capabilities.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "UX08",
+      "title": "A first saved outcome is reachable without unrelated work.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "JT01",
+      "title": "Cancel discards only the current edit.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "JT02",
+      "title": "Deleting an item removes the intended object only.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "JT03",
+      "title": "Returning from a subflow restores context.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "JT04",
+      "title": "A nested interaction does not unexpectedly replace the page.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "JT05",
+      "title": "Optional choices remain reversible.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "JT06",
+      "title": "Old and direct links reach a usable destination.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "JT07",
+      "title": "Review describes the complete proposed change.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "JT08",
+      "title": "Existing completion state survives returning.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "DM01",
+      "title": "Saved, savings and spending retain distinct meanings.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "DM02",
+      "title": "Linked dreams and categories are not double-counted.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "DM03",
+      "title": "Month selection controls both display and writes.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "DM04",
+      "title": "Multi-month amounts use one approved allocation rule.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "DM05",
+      "title": "Recurring activation is bounded and repeatable.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "DM06",
+      "title": "Changing one money record updates all affected views.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "DM07",
+      "title": "Public representations exclude private information everywhere.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "DM08",
+      "title": "Switching accounts does not inherit private local state.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "RB01",
+      "title": "Content variants fit the approved layout.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "RB02",
+      "title": "Image failure has a usable fallback.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "RB03",
+      "title": "The keyboard preserves composer and action access.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "RB04",
+      "title": "Browser restoration does not revive stale actions.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "RB05",
+      "title": "An older response cannot overwrite a newer choice.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "RB06",
+      "title": "Uncertain saves can be reconciled.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "RB07",
+      "title": "Microphone denial preserves a working text path.",
+      "implementation": "planned",
+      "tool": null
+    },
+    {
+      "id": "RB08",
+      "title": "Help and errors describe an available recovery action.",
+      "implementation": "planned",
+      "tool": null
+    }
+  ]
+}

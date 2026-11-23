@@ -1,0 +1,6 @@
+{
+  "rules": [
+    { "id": "approved-story-left-edge", "selectors": ["#headline", "#hero", "#save"], "axis": "left", "tolerance": 2 },
+    { "id": "deliberate-offset-example", "selectors": ["#headline", "#offset"], "axis": "left", "tolerance": 2 }
+  ]
+}

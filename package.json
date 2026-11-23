@@ -1,0 +1,11 @@
+{
+  "name": "qa-evidence",
+  "version": "0.1.0",
+  "description": "Browser geometry and annotated alignment evidence for human and AI reviewers.",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "bin": { "qa-alignment": "bin/alignment.mjs" },
+  "scripts": { "test": "node --test test/*.test.mjs", "demo": "node bin/alignment.mjs --url ./examples/alignment.html --rules ./examples/rules.json --out ./artifacts/demo" },
+  "license": "MIT",
+  "exports": { "./collector": "./src/collect.mjs", "./alignment": "./src/analyze.mjs", "./report": "./src/render.mjs" }
+}
