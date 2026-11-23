@@ -1,21 +1,46 @@
 {
-  "$comment": "Guest-only prod exploration of Girl Math's signed-out flow (StarterOnboarding at / and the sign-in screen). Labels below come from girl-math src/routes/StarterOnboarding.tsx, src/routes/Welcome.tsx, src/components/Analytics.tsx and src/voice/packs/girlmath.ts. NOT YET APPROVED FOR PROD: review the safety block before the first run.",
+  "$comment": "Guest-only prod exploration of Girl Math's signed-out flow. SCOPE (2026-11-22): UX checks only on each reachable screen; flow checks come later. Anything that sends the story to AI is blocked: 'continue' (step 1 reviewDay and later steps), the reply 'send reply' button, and 'make my plan and dreams'. Approved by the user: drafts OK (tagged), never publish/share, max 5 prod runs/day.",
   "baseUrl": "https://www.coolgirlmath.com",
-  "entry": ["/"],
+  "entry": [
+    "/"
+  ],
   "sameOriginOnly": true,
   "denyActions": [
     "/publish|share|delete|pay|subscribe|upgrade|checkout|log ?out|sign ?out/i",
     "/sign ?in|log ?in|let me in|i already have an account|i forgot my password|reset link|back to sign ?in/i",
-    "/upload my photos|change photo|change cover photo/i"
+    "/upload my photos|change photo|change cover photo/i",
+    "/^continue$|send reply|make my plan|share both dreams|try saving again/i"
   ],
-  "denySubmitForms": ["/sign ?up|create account|register|make my account|making your account/i"],
-  "blockRequests": ["*posthog*", "*stripe.com*", "*google-analytics*", "*googletagmanager*", "*sentry.io*"],
+  "denySubmitForms": [
+    "/sign ?up|create account|register|make my account|making your account/i"
+  ],
+  "blockRequests": [
+    "*posthog*",
+    "*stripe.com*",
+    "*google-analytics*",
+    "*googletagmanager*",
+    "*sentry.io*"
+  ],
   "allowAiConsent": false,
-  "budget": { "maxStates": 40, "maxActions": 200, "maxMinutes": 15 },
-  "viewports": [{ "width": 390, "height": 844 }, { "width": 1280, "height": 800 }],
+  "budget": {
+    "maxStates": 40,
+    "maxActions": 200,
+    "maxMinutes": 15
+  },
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 1280,
+      "height": 800
+    }
+  ],
   "syntheticInputs": {
     "story": "Bought a $4.50 latte and saved $20 for a trip. QA-SYNTHETIC",
     "text": "glow time QA-SYNTHETIC",
     "name": "Quinn QA-SYNTHETIC"
-  }
+  },
+  "maxRunsPerDay": 5
 }

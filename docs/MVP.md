@@ -1,5 +1,7 @@
 # MVP: visit every screen and check each one
 
+> **Scope for now (2026-11-22):** UX checks only. The explorer navigates just to reach each screen, then each screen is checked and reported on its own. Flow checks (does Back return to the editor, does focus land in the right place, does a draft survive a refresh) are planned next, but they don't produce findings yet.
+
 **Goal:** point the tool at a preview URL. It reaches every screen and state it can, checks each one, and returns one report showing what it reached and what's wrong.
 
 ## 1. Explore: reach every screen and state
