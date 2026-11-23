@@ -27,7 +27,7 @@ A run is one coordinated swarm, not a set of independent bots. Agreed on 2026-11
 ## 4. Agents share findings
 
 - A finding tied to a component, matched by selector or style signature, triggers a request to check every other state that contains that component.
-- Duplicate findings merge into one bug with a list of the states where it appears.
+- *(Deferred.)* Merging duplicate findings across states is turned off for now; each screen is analyzed and reported in isolation (see ARCHITECTURE.md).
 - A new edge found by any role, for example "refresh during consent lands on the editor", is added to the map for the scouts.
 
 ## 5. Coordinator

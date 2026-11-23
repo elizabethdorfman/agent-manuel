@@ -74,7 +74,8 @@ Every check must have the following:
 - **Replay:** every new branch starts in a fresh browser context. The runner replays the shortest known action path to the state, then takes one untried action.
 - **Budget:** a maximum number of states, maximum actions and maximum minutes. When the budget runs out, the run stops cleanly and still writes the report.
 - **Each new state:** for each viewport in the config (default 390×844 and 1280×800), run every registered check, save a screenshot and record the findings.
-- **Output:** `artifacts/runs/<timestamp>/` with `ledger.json`, `findings.json`, `states/<key>/<viewport>.png` and `report.html`.
+- **Output:** `artifacts/runs/<timestamp>/` with `ledger.json`, `states/<key>/` and `report.html`. Each state folder holds `<viewport>.png` and that state's own `findings.json`.
+- **Each screen is analyzed in isolation (user decision, 2026-11-22).** Findings belong to exactly one state, and the report has one section per state: its screenshot, then its findings. Do NOT merge or deduplicate findings across states for now; the same issue on two screens appears twice, once under each screen. A run-level `findings.json` may exist only as a flat index that keeps the `state` field on every entry.
 
 ## Safety, which applies to every run and especially prod
 
