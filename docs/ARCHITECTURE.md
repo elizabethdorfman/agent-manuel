@@ -49,6 +49,13 @@ export function analyze(collected, ctx) {
   };
 }
 
+// Variants are EXTRA passes (decided 2026-11-22). The runner always does the normal pass first, then one extra
+// collect+analyze per variant, with ctx.variant set. Its findings get the variant's id suffix, e.g. "-200".
+// A check whose base pass is meaningless sets meta.variantsOnly = true, as reflow does for its 320px pass.
+// A variant may carry `undo: {method, params}`; the runner applies it and then always re-applies the base viewport.
+// Optional hook: export async function gather(send, collected) -> ctx.extra. CDP-side data (typography's fonts)
+// is gathered right after collect, in the same page state.
+// ctx.screenshot is a full-page PNG Buffer covering collected.capture when the check needs pixels (contrast).
 // Optional: the browser actions the check needs before collect, for example a 200% text scale.
 // Return a list of { method, params } CDP calls. The runner applies them, collects, then undoes them.
 // The runner MUST restore the viewport and emulation afterwards: re-apply the state's base viewport,
